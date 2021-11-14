@@ -1,0 +1,2 @@
+//module.exports.URI = "mongodb+srv://admin:qvECexOjSz5LE01s@writingpro-cluster.6szag.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+module.exports.URI = "mongodb://localhost:27017/WritingPro";
