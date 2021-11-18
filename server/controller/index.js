@@ -10,7 +10,8 @@ let Visitor = visitorModel.Visitor; // alias
 //let userProfile = require('../models/examplemodel');
 
 module.exports.displayHomePage = (req, res, next) => {
-  res.render("index", { title: "Home Page" });
+  res.render("index", { title: "Home Page", 
+  username: req.user ? req.user.username: '' });
 };
 
 module.exports.displayLoginPage = (req, res, next) => {
@@ -21,7 +22,7 @@ module.exports.displayLoginPage = (req, res, next) => {
        {
            title: "Login",
            messages: req.flash('loginMessage'),
-           //username: req.user ? req.user.username: ''
+           username: req.user ? req.user.username: ''
 
        })
   }else
@@ -65,7 +66,7 @@ if(!req.user)
     {
         title: 'Register',
         messages: req.flash('registerMessage'),
-        //username: req.user ? req.user.username : ''
+        username: req.user ? req.user.username : ''
     });
 }
 else
