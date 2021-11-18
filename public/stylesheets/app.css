@@ -13,20 +13,19 @@
 
 header{
     grid-area: header;
-    border: solid;
 }
 
 nav{
     grid-area: sidenav;
-    border: solid;
+    background-color: red;
 }
 
 main{
     grid-area: content;
-    border: solid;
+    background-color: aqua;
 }
 
 footer{
     grid-area: footer;
-    border: solid;
+    background-color: yellow;
 }

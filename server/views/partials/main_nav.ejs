@@ -1,1 +1,51 @@
-<header>Logo and LogIn</header>
+<header>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">WritingPro</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+      <!--
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+        </li>
+        -->
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        
+        <!-- placeholder for dashboard page -->
+        <li class="nav-item">
+          <a class="nav-link" href="/dashboard">Dashboard</a>
+        </li>
+        
+        <!--
+        <li class="nav-item">
+          <a class="nav-link" href="/login">Login</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>
+        -->
+
+
+          <!-- nav for login-->
+          
+          <% if(typeof username == 'string' && username) {%>
+                <li class="navbar-text"><i class="fas fa-lg fa-user"></i> Welcome, <%= username %></li>
+                <li class="nav-item active">
+                  <a class="nav-link" href="/logout"><i class="fas fa-lg fa-sign-out-alt"></i> Logout </a>
+                </li>
+              <% } else { %>
+                <li class="nav-item active">
+                  <a class="nav-link" href="/login"><i class="fas fa-lg fa-sign-in-alt"></i> Login </a>
+                </li>
+              <% } %>
+        
+      </ul>
+    </div>
+  </div>
+</nav></header>
