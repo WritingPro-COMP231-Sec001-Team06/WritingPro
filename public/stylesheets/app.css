@@ -1,0 +1,32 @@
+.layout{
+    display: grid;
+    grid-template-areas: 
+    "header header"
+    "sidenav content"
+    "footer footer";
+    grid-template-columns: 4fr 16fr;
+    grid-template-rows: 5fr 90fr 3fr;
+    gap: 5px;
+    height: 100vh;
+    padding: 5px 5px 0 5px;
+}
+
+header{
+    grid-area: header;
+    border: solid;
+}
+
+nav{
+    grid-area: sidenav;
+    border: solid;
+}
+
+main{
+    grid-area: content;
+    border: solid;
+}
+
+footer{
+    grid-area: footer;
+    border: solid;
+}
