@@ -21,7 +21,7 @@ module.exports.displayLoginPage = (req, res, next) => {
        {
            title: "Login",
            messages: req.flash('loginMessage'),
-           //displayName: req.user ? req.user.displayName: ''
+           //username: req.user ? req.user.username: ''
 
        })
   }else
@@ -65,7 +65,7 @@ if(!req.user)
     {
         title: 'Register',
         messages: req.flash('registerMessage'),
-        //displayName: req.user ? req.user.displayName : ''
+        //username: req.user ? req.user.username : ''
     });
 }
 else
