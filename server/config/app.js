@@ -4,6 +4,20 @@ let path = require("path");
 let cookieParser = require("cookie-parser");
 let logger = require("morgan");
 
+//modules for authentication
+let session = require('express-session');
+let passport = require('passport');
+let passportLocal = require('passport-local');
+
+//authentication objects
+let localStrategy = passportLocal.Strategy;
+// create a Visitor Model Instance
+let visitorModel = require('../models/visitor');
+let Visitor = visitorModel.Visitor;
+
+//module for auth messaging and error management
+let flash = require('connect-flash');
+
 //Database Setup
 let mongoose = require("mongoose");
 let DB = require("./db");
@@ -14,6 +28,17 @@ let mongoDB = mongoose.connection;
 mongoDB.on('error', console.error.bind(console, 'Connection Error:'));
 mongoDB.once('open', ()=>{
   console.log('Connected to MongoDB...');
+});
+mongoDB.once('connected', ()=>{
+  console.log('MongoDB Connected');
+});
+
+mongoDB.on('disconnected', ()=>{
+  console.log('MongoDB Disconnected');
+});
+
+mongoDB.on('reconnected', ()=>{
+  console.log('MongoDB Reconnected');
 });
 
 let indexRouter = require("../routes/index");
@@ -30,6 +55,30 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../../public")));
 app.use(express.static(path.join(__dirname, "../../node_modules")));
+
+//setup express session
+let Auth = require('./auth');
+app.use(session({
+  secret: Auth.Secret,
+  saveUninitialized: false,
+  resave: false
+}));
+
+// initialize flash
+app.use(flash());
+
+// initialize passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// passport visitor configuration
+
+// impletment a User Authentication Strategy
+passport.use(Visitor.createStrategy());
+
+// serialize and deserialize the Visitor Info
+passport.serializeUser(Visitor.serializeUser());
+passport.deserializeUser(Visitor.deserializeUser());
 
 app.use("/", indexRouter);
 
