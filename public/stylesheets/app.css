@@ -42,3 +42,7 @@
     grid-area: footer;
     background-color: yellow;
 }
+
+.selected-link{
+    background-color: #d2f4ea;;
+}
