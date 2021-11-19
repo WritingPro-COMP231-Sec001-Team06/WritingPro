@@ -2,6 +2,19 @@
     display: grid;
     grid-template-areas: 
     "header header"
+    "content content"
+    "footer footer";
+    grid-template-columns: 4fr 16fr;
+    grid-template-rows: 5fr 90fr 3fr;
+    gap: 5px;
+    height: 100vh;
+    padding: 5px 5px 0 5px;
+}
+
+.logged-layout{
+    display: grid;
+    grid-template-areas: 
+    "header header"
     "sidenav content"
     "footer footer";
     grid-template-columns: 4fr 16fr;
@@ -11,21 +24,21 @@
     padding: 5px 5px 0 5px;
 }
 
-header{
+.grid-header{
     grid-area: header;
 }
 
-nav{
+.grid-nav{
     grid-area: sidenav;
     background-color: red;
 }
 
-main{
+.grid-main{
     grid-area: content;
     background-color: aqua;
 }
 
-footer{
+.grid-footer{
     grid-area: footer;
     background-color: yellow;
 }
