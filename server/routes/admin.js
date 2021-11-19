@@ -11,7 +11,9 @@ router.get("/admin/pending", adminController.displayPendingPage);
 
 router.get("/admin/rejected", adminController.displayRejectedPage);
 
-router.get("/admin/task1", adminController.displayTask1Page);
+router.get("/admin/task1/add", adminController.displayTask1Page);
+
+router.post("/admin/task1/add", adminController.processAddTask1Page);
 
 router.get("/admin/task2", adminController.displayTask2Page);
 

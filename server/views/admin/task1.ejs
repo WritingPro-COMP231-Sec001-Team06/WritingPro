@@ -2,55 +2,25 @@
 <div class="logged-layout">
 <%- include ../partials/main_nav.ejs %>
 
-<nav class="grid-nav">
-    <div class="h-100 w-100 p-3 bg-light">
-    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-      <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-      <span class="fs-4">Admin Dashboard</span>
-    </a>
-    <hr>
-    <ul class="nav nav-pills flex-column mb-auto">
-      <li class="nav-item">
-        <a href="/admin" class="nav-link link-dark" aria-current="page">
-          <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
-          Home
-        </a>
-      </li>
-      <li>
-        <a href="/admin/pending" class="nav-link link-dark">
-          <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
-          Pending Applications
-        </a>
-      </li>
-      <li>
-        <a href="/admin/approved" class="nav-link link-dark">
-          <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
-          Approved Applications
-        </a>
-      </li>
-      <li>
-        <a href="/admin/rejected" class="nav-link link-dark">
-          <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
-          Rejected Applications
-        </a>
-      </li>
-      <li>
-        <a href="/admin/task1" class="nav-link active">
-          <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
-          Task 1 Prompts
-        </a>
-      </li>
-       <li>
-        <a href="/admin/task2" class="nav-link link-dark">
-          <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
-          Task 2 Prompts
-        </a>
-      </li>
-    </ul>
-    <hr>
-  </div>
-</nav>
-<main class="grid-main"><%= title %></main>
+<%- include ../partials/sidenav/task1.ejs %>
+
+<main class="grid-main">
+
+<div class ="container">
+  <form method="POST">
+    <div class="form-group">
+    <input type="file" accept="image/*" onchange="loadFile(event)">
+    <br>
+    <img class="img-preview d-block align-items-center" id="output"/>
+    </div>
+    <div class="form-group">
+      <label for="prompt">Prompt:</label><br>
+      <textarea id="prompt" name="prompt" placeholder="Enter Prompt..."></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+</main>
 
 <%- include ../partials/bottom_nav.ejs %>
 </div>

@@ -39,3 +39,12 @@
 .grid-footer{
     grid-area: footer;
 }
+
+.img-preview{
+    width: 70%;
+}
+
+textarea{
+    width: 70%;
+    height: 150px;
+}

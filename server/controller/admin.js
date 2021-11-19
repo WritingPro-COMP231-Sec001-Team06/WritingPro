@@ -5,7 +5,7 @@ module.exports.displayHomePage = (req, res, next) => {
     {
         return res.redirect("/login");
     }
-    res.render("../views/admin/home", { title: "Admin Home Page", 
+    res.render("admin/home", { title: "Admin Home Page", 
     username: req.user ? req.user.username: ''  });
   };
 
@@ -14,7 +14,7 @@ module.exports.displayHomePage = (req, res, next) => {
     {
         return res.redirect("/login");
     }
-    res.render("../views/admin/approved", { title: "Approved Page", 
+    res.render("admin/approved", { title: "Approved Page", 
     username: req.user ? req.user.username: ''  });
   };
 
@@ -23,7 +23,7 @@ module.exports.displayHomePage = (req, res, next) => {
     {
         return res.redirect("/login");
     }
-    res.render("../views/admin/pending", { title: "Pending Page", 
+    res.render("admin/pending", { title: "Pending Page", 
     username: req.user ? req.user.username: ''  });
   };
 
@@ -32,7 +32,7 @@ module.exports.displayHomePage = (req, res, next) => {
     {
         return res.redirect("/login");
     }
-    res.render("../views/admin/rejected", { title: "Rejected Page", 
+    res.render("admin/rejected", { title: "Rejected Page", 
     username: req.user ? req.user.username: ''  });
   };
 
@@ -41,7 +41,7 @@ module.exports.displayHomePage = (req, res, next) => {
     {
         return res.redirect("/login");
     }
-    res.render("../views/admin/task1", { title: "Task 1 Page", 
+    res.render("admin/task1", { title: "Task 1 Page", 
     username: req.user ? req.user.username: ''  });
   };
 
@@ -50,6 +50,15 @@ module.exports.displayHomePage = (req, res, next) => {
     {
         return res.redirect("/login");
     }
-    res.render("../views/admin/task2", { title: "Task 2 Page", 
+    res.render("admin/task2", { title: "Task 2 Page", 
     username: req.user ? req.user.username: ''  });
+  };
+
+  module.exports.processAddTask1Page = (req, res, next) => {
+    if(!req.user)
+    {
+        return res.redirect("/login");
+    }
+    console.log(req.body.prompt);
+    res.redirect("/admin/home");
   };
