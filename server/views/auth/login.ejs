@@ -2,75 +2,76 @@
 <div class="layout">
 <%- include ../partials/main_nav.ejs %>
 
-  <main class="grid-main container">
+  <div class="grid-main">
+    <main class="d-block container">
 
-     <!-- Message Area -->
+      <!-- Message Area -->
 
-     <% if(messages.length > 0) { %>
+      <% if(messages.length > 0) { %>
 
-       <div class = "alert alert-danger">
-        <%= messages %>
-       </div>
-
-     <% } %>
-
-     <br><br><br><br>
-     <!-- Main Content -->
-       <div class="row justify-content-md-center">
-          <div class="col-8">
-          <h2 class="display-2 text-center">Please Login</h2>
-          <hr class="my-4">
-          </div>
+        <div class = "alert alert-danger">
+          <%= messages %>
         </div>
-      <br>
 
-      <div class="container">
-      <div class="row">
-      <div class="offset-md-4 col-md-4">
-  
+      <% } %>
 
-      <form method="POST" autocomplete="off">
+      <br><br><br><br>
+      <!-- Main Content -->
+        <div class="row justify-content-md-center">
+            <div class="col-8">
+            <h2 class="display-2 text-center">Please Login</h2>
+            <hr class="my-4">
+            </div>
+          </div>
+        <br>
 
-         <fieldset class="form-group">
-         <label for="email"> Email: </label>
-         <input type="text" class="form-control" 
-         id="username" name="username" 
-         placeholder="Enter the Email." required autofocus>
-         </fieldset>
-         <br>
+        <div class="container">
+        <div class="row">
+        <div class="offset-md-4 col-md-4">
+    
 
-         <fieldset class="form-group">
-         <label for="password"> Password: </label>
-         <input type="password" class="form-control" 
-         id="password" name="password" 
-         placeholder="Enter the password." required>
-         or
-         <a href="/register"> Register Here</a>
-         </fieldset>
-         <br>
-         <fieldset class="form-group text-right">
-           <input type="submit" class="btn btn-success" value="Login">
-           <a href="/">
-               <input type="button" class="btn btn-warning" value="Cancel">
-           </a>
-         </fieldset>
+        <form method="POST" autocomplete="off">
 
-         
+          <fieldset class="form-group">
+          <label for="email"> Email: </label>
+          <input type="text" class="form-control" 
+          id="username" name="username" 
+          placeholder="Enter the Email." required autofocus>
+          </fieldset>
+          <br>
 
-      
+          <fieldset class="form-group">
+          <label for="password"> Password: </label>
+          <input type="password" class="form-control" 
+          id="password" name="password" 
+          placeholder="Enter the password." required>
+          or
+          <a href="/register"> Register Here</a>
+          </fieldset>
+          <br>
+          <fieldset class="form-group text-right">
+            <input type="submit" class="btn btn-success" value="Login">
+            <a href="/">
+                <input type="button" class="btn btn-warning" value="Cancel">
+            </a>
+          </fieldset>
 
-      </form>
+          
 
-      </div>
-      </div>
-      </div>
+        
+
+        </form>
+
+        </div>
+        </div>
+        </div>
 
 
 
 
 
-  </main>
-
+    </main>
+  </div>
 
 
 

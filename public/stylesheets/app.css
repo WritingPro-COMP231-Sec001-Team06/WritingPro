@@ -30,19 +30,12 @@
 
 .grid-nav{
     grid-area: sidenav;
-    background-color: red;
 }
 
 .grid-main{
     grid-area: content;
-    background-color: aqua;
 }
 
 .grid-footer{
     grid-area: footer;
-    background-color: yellow;
-}
-
-.selected-link{
-    background-color: #d2f4ea;;
 }
