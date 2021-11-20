@@ -3,6 +3,7 @@ let express = require("express");
 let path = require("path");
 let cookieParser = require("cookie-parser");
 let logger = require("morgan");
+let fileUpload = require('express-fileupload');
 
 //modules for authentication
 let session = require('express-session');
@@ -56,6 +57,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../../public")));
 app.use(express.static(path.join(__dirname, "../../node_modules")));
+app.use(fileUpload());
 
 //setup express session
 let Auth = require('./auth');

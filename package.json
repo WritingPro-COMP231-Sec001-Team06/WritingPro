@@ -17,6 +17,7 @@
     "debug": "~2.6.9",
     "ejs": "~2.6.1",
     "express": "~4.16.1",
+    "express-fileupload": "^1.2.1",
     "express-session": "^1.17.2",
     "fs": "0.0.1-security",
     "http-errors": "~1.6.3",
@@ -26,7 +27,9 @@
     "nodemon": "^2.0.15",
     "passport": "^0.5.0",
     "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^6.1.0"
+    "passport-local-mongoose": "^6.1.0",
+    "path": "^0.12.7",
+    "tmp": "^0.2.1"
   },
   "description": "WritingPro is an application that will allow IELTS students who wish to improve their composition ability to obtain feedback on their writing output in a personalized, and timely manner.",
   "repository": {

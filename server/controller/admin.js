@@ -1,6 +1,7 @@
 let express = require("express");
 let fs = require("fs");
 let AWS = require('aws-sdk');
+let tmp = require('tmp');
 
 const accessKey = 'AKIA2VR32QISDVBT3LHG';
 const secretKey = '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';
@@ -82,22 +83,29 @@ module.exports.displayHomePage = (req, res, next) => {
     {
         return res.redirect("/login");
     }
-    const fileContent = fs.readFileSync('C:/Users/DONDON/Downloads/WritingPro/public/images/ieltsbarchart.png');
-
-    let params = {
-      Bucket: bucketName,
-      Key: 'example.png',
-      Body: fileContent
-    };
-
-    s3.upload(params, function(err, data) {
-      if(err){
-        throw err;
-      }
-      console.log('File uploaded successfully. ', data.Location);
-    });
-
     console.log(req.body.prompt);
-    console.log(req.body.imageInput);
+    console.log(req.files.imageInput.name);
+    let image = req.files.imageInput;
+    let pathdir = tmp.dirSync();
+    let temp = pathdir.name + image.name;
+    image.mv(temp, function(error) {
+      if(error){
+        throw error;
+      }
+      const fileContent = fs.readFileSync(temp);
+      let params = {
+        Bucket: bucketName,
+        Key: req.files.imageInput.name,
+        Body: fileContent
+      };
+      s3.upload(params, function(err, data) {
+        if(err){
+          throw err;
+        }
+        console.log('File uploaded successfully. ', data.Location);
+
+      });
+    });
+    pathdir.removeCallback();
     res.redirect("/admin/home");
   };
