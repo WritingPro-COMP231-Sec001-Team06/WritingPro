@@ -5,21 +5,7 @@
 <%- include ../partials/sidenav/task1.ejs %>
 
 <main class="grid-main">
-
-<div class ="container">
-  <form method="POST">
-    <div class="form-group">
-    <input type="file" accept="image/*" onchange="loadFile(event)">
-    <br>
-    <img class="img-preview d-block align-items-center" id="output"/>
-    </div>
-    <div class="form-group">
-      <label for="prompt">Prompt:</label><br>
-      <textarea id="prompt" name="prompt" placeholder="Enter Prompt..."></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
-</div>
+<a href="/admin/task1/add">Create Task 1 Academic</a>
 </main>
 
 <%- include ../partials/bottom_nav.ejs %>

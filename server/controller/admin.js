@@ -37,6 +37,7 @@ module.exports.displayHomePage = (req, res, next) => {
   };
 
   module.exports.displayTask1Page = (req, res, next) => {
+    console.log("here");
     if(!req.user)
     {
         return res.redirect("/login");
@@ -51,6 +52,15 @@ module.exports.displayHomePage = (req, res, next) => {
         return res.redirect("/login");
     }
     res.render("admin/task2", { title: "Task 2 Page", 
+    username: req.user ? req.user.username: ''  });
+  };
+
+  module.exports.displayAddTask1Page = (req, res, next) => {
+    if(!req.user)
+    {
+        return res.redirect("/login");
+    }
+    res.render("admin/task1_add", { title: "Task 1 Page", 
     username: req.user ? req.user.username: ''  });
   };
 

@@ -1,0 +1,27 @@
+<%- include ../partials/header.ejs %>
+<div class="logged-layout">
+<%- include ../partials/main_nav.ejs %>
+
+<%- include ../partials/sidenav/task1.ejs %>
+
+<main class="grid-main">
+
+<div class ="container">
+  <form method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+    <input name="imageInput" type="file" accept="image/*" onchange="loadFile(event)">
+    <br>
+    <img class="img-preview d-block align-items-center" id="output"/>
+    </div>
+    <div class="form-group">
+      <label for="prompt">Prompt:</label><br>
+      <textarea id="prompt" name="prompt" rows="10" placeholder="Enter Prompt..."></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+</main>
+
+<%- include ../partials/bottom_nav.ejs %>
+</div>
+<%- include ../partials/footer.ejs %>
