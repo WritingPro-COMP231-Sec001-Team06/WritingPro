@@ -13,10 +13,13 @@ router.get("/admin/rejected", adminController.displayRejectedPage);
 
 router.get("/admin/task1", adminController.displayTask1Page);
 
-router.get("/admin/task1/add", adminController.displayAddTask1Page);
+router.get("/admin/task1acad/add", adminController.displayAddTask1AcadPage);
 
+router.get("/admin/task1gen/add", adminController.displayAddTask1GenPage);
 
-router.post("/admin/task1/add", adminController.processAddTask1Page);
+router.get("/admin/task2/add", adminController.displayAddTask2Page);
+
+router.post("/admin/task1/add", adminController.processAddTask1AcadPage);
 
 router.get("/admin/task2", adminController.displayTask2Page);
 

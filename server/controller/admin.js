@@ -2,6 +2,7 @@ let express = require("express");
 let fs = require("fs");
 let AWS = require('aws-sdk');
 let tmp = require('tmp');
+let Prompt = require('../models/prompt');
 
 const accessKey = 'AKIA2VR32QISDVBT3LHG';
 const secretKey = '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';
@@ -69,16 +70,34 @@ module.exports.displayHomePage = (req, res, next) => {
     username: req.user ? req.user.username: ''  });
   };
 
-  module.exports.displayAddTask1Page = (req, res, next) => {
+  module.exports.displayAddTask1AcadPage = (req, res, next) => {
     if(!req.user)
     {
         return res.redirect("/login");
     }
-    res.render("admin/task1_add", { title: "Task 1 Page", 
+    res.render("admin/task1acad_add", { title: "Task 1 Page", 
     username: req.user ? req.user.username: ''  });
   };
 
-  module.exports.processAddTask1Page = (req, res, next) => {
+  module.exports.displayAddTask1GenPage = (req, res, next) => {
+    if(!req.user)
+    {
+        return res.redirect("/login");
+    }
+    res.render("admin/task1gen_add", { title: "Task 1 Page", 
+    username: req.user ? req.user.username: ''  });
+  };
+
+  module.exports.displayAddTask2Page = (req, res, next) => {
+    if(!req.user)
+    {
+        return res.redirect("/login");
+    }
+    res.render("admin/task2_add", { title: "Task 1 Page", 
+    username: req.user ? req.user.username: ''  });
+  };
+
+  module.exports.processAddTask1AcadPage = (req, res, next) => {
     if(!req.user)
     {
         return res.redirect("/login");
@@ -103,9 +122,14 @@ module.exports.displayHomePage = (req, res, next) => {
           throw err;
         }
         console.log('File uploaded successfully. ', data.Location);
+        let signedUrl = s3.getSignedUrl('getObject', params);
+        console.log(signedUrl);
+
 
       });
     });
     pathdir.removeCallback();
     res.redirect("/admin/home");
   };
+
+  
