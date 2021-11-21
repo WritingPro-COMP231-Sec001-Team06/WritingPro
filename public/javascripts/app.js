@@ -15,5 +15,3 @@ let loadFile = function(event) {
     output.onload = function() {
       URL.revokeObjectURL(output.src);
     }};
-
-let editor = new FroalaEditor(document.getElementById('example'));

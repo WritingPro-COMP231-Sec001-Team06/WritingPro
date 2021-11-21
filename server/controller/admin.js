@@ -56,8 +56,32 @@ module.exports.displayHomePage = (req, res, next) => {
     {
         return res.redirect("/login");
     }
-    res.render("admin/prompts", { title: "Task 1 Page", 
-    username: req.user ? req.user.username: ''  });
+    Prompt.find({}, (err, prompts) => {
+      if(err){
+        console.log(err);
+        res.end(err);
+      }
+      let mappedPrompts = prompts.map( prompt => {
+        let task = prompt.isTask1 ? 'Task 1' : 'Task 2';
+        let examType = prompt.isAcademic ? 'Academic' : 'General';
+        let promptMessage = prompt.promptMessage.split('&#13;&#10;').join('\r\n');
+        return {
+          task: task,
+          examType: examType,
+          imageDescription: prompt.imageDescription,
+          dateCreate: new Date(prompt.dateCreate).toLocaleString('en-US'),
+          imageUrl: prompt.imageUrl,
+          promptMessage: promptMessage,
+          status: prompt.isActive ? 'Active' : 'Inactive'
+        };
+      });
+      console.log(mappedPrompts);
+      res.render('admin/prompts', {
+        title: "Prompts",
+        prompts: mappedPrompts,
+        username: req.user ? req.user.username: ''
+      });
+    });
   };
 
   module.exports.displayCreatePromptPage = (req, res, next) => {
@@ -130,6 +154,7 @@ module.exports.displayHomePage = (req, res, next) => {
   module.exports.processCreatePromptPage = (req, res, next) => {
     let isTask1 = req.body.isTask1 === 'true' ? true : false;
     let isAcademic = req.body.isAcademic === 'true' ? true : false;
+    let imageDescription = '';
     let regexp = /\r\n/;
     let prompt = req.body.prompt;
     let signedUrl = '';
@@ -146,6 +171,7 @@ module.exports.displayHomePage = (req, res, next) => {
       let tempk1 = tempk0.split(/[^a-z0-9]/);
       let ext = '.' + tempk1[tempk1.length - 1];
       let temp = pathdir.name;
+      imageDescription = req.body.imageDescription;
       tempk1.splice(-1);
       let key = tempk1.join('') + ext;
       image.mv(temp, function(error) {
@@ -173,7 +199,7 @@ module.exports.displayHomePage = (req, res, next) => {
     Prompt.create({
       isTask1: isTask1,
       isAcademic: isAcademic,
-      imageDescription: req.body.imageDescription,
+      imageDescription: imageDescription,
       imageUrl: signedUrl,
       promptMessage: prompt.split(regexp).join('&#13;&#10;'),
       isActive: true

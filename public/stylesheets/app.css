@@ -48,3 +48,12 @@ textarea{
     width: 70%;
     white-space: pre-wrap;
 }
+
+.scrollable-vertical{
+    overflow-y: scroll;
+}
+.position-sticky{
+    position: -webkit-sticky;
+    position: sticky;
+    top: 1px;
+}

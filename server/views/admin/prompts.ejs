@@ -4,10 +4,27 @@
 
 <%- include ../partials/sidenav/prompts.ejs %>
 
-<main class="grid-main">
-<a class="btn btn-primary" href="/admin/prompts/create/1a">Create Task 1 Academic</a>
-<a class="btn btn-primary" href="/admin/prompts/create/1g">Create Task 1 General</a>
-<a class="btn btn-primary" href="/admin/prompts/create/2t">Create Task 2</a>
+<main class="grid-main scrollable-vertical">
+<div class="position-sticky">
+    <a class="btn btn-primary" href="/admin/prompts/create/1a">Create Task 1 Academic</a>
+    <a class="btn btn-primary" href="/admin/prompts/create/1g">Create Task 1 General</a>
+    <a class="btn btn-primary" href="/admin/prompts/create/2t">Create Task 2</a>
+<div>
+<br>
+<br>
+<% for(let i = 0; i < prompts.length; i++) { %>
+<div class="card img-preview">
+  <div class="card-header">
+    (<%= prompts[i].status %>) <%= prompts[i].task %> <%= prompts[i].examType %> <%= prompts[i].imageDescription %>
+  </div>
+  <div class="card-body">
+    <h6 class="card-title">Prompt:</h6>
+    <p class="card-text"><%= prompts[i].promptMessage %></p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div>
+</div>
+<br>
+<% } %>
 </main>
 
 <%- include ../partials/bottom_nav.ejs %>
