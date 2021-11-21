@@ -15,16 +15,8 @@ router.get("/admin/prompts", adminController.displayPromptsPage);
 
 router.get("/admin/prompts/create/:settings", adminController.displayCreatePromptPage);
 
-router.get("/admin/task1acad/add", adminController.displayAddTask1AcadPage);
-
-router.get("/admin/task1gen/add", adminController.displayAddTask1GenPage);
-
-router.get("/admin/task2/add", adminController.displayAddTask2Page);
-
-router.get("/admin/task2", adminController.displayTask2Page);
-
 router.post("/admin/prompts/create/:settings", adminController.processCreatePromptPage);
 
-
+router.get("/admin/prompts/view/:id", adminController.displayViewPage);
 
 module.exports = router;

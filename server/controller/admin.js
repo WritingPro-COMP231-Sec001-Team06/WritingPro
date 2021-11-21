@@ -66,16 +66,19 @@ module.exports.displayHomePage = (req, res, next) => {
         let examType = prompt.isAcademic ? 'Academic' : 'General';
         let promptMessage = prompt.promptMessage.split('&#13;&#10;').join('\r\n');
         return {
+          id: prompt._id,
+          isTask1: prompt.isTask1,
+          isAcademic: prompt.isAcademic,
+          isActive: prompt.isActive,
           task: task,
           examType: examType,
           imageDescription: prompt.imageDescription,
-          dateCreate: new Date(prompt.dateCreate).toLocaleString('en-US'),
+          dateCreated: new Date(prompt.dateCreated).toLocaleString('en-US'),
           imageUrl: prompt.imageUrl,
           promptMessage: promptMessage,
           status: prompt.isActive ? 'Active' : 'Inactive'
         };
       });
-      console.log(mappedPrompts);
       res.render('admin/prompts', {
         title: "Prompts",
         prompts: mappedPrompts,
@@ -115,49 +118,13 @@ module.exports.displayHomePage = (req, res, next) => {
     isAcademic: isAcademic});
   };
 
-  module.exports.displayTask2Page = (req, res, next) => {
-    if(!req.user)
-    {
-        return res.redirect("/login");
-    }
-    res.render("admin/task2", { title: "Task 2 Page", 
-    username: req.user ? req.user.username: ''  });
-  };
-
-  module.exports.displayAddTask1AcadPage = (req, res, next) => {
-    if(!req.user)
-    {
-        return res.redirect("/login");
-    }
-    res.render("admin/task1acad_add", { title: "Task 1 Page", 
-    username: req.user ? req.user.username: ''  });
-  };
-
-  module.exports.displayAddTask1GenPage = (req, res, next) => {
-    if(!req.user)
-    {
-        return res.redirect("/login");
-    }
-    res.render("admin/task1gen_add", { title: "Task 1 Page", 
-    username: req.user ? req.user.username: ''  });
-  };
-
-  module.exports.displayAddTask2Page = (req, res, next) => {
-    if(!req.user)
-    {
-        return res.redirect("/login");
-    }
-    res.render("admin/task2_add", { title: "Task 1 Page", 
-    username: req.user ? req.user.username: ''  });
-  };
-
   module.exports.processCreatePromptPage = (req, res, next) => {
     let isTask1 = req.body.isTask1 === 'true' ? true : false;
     let isAcademic = req.body.isAcademic === 'true' ? true : false;
     let imageDescription = '';
     let regexp = /\r\n/;
     let prompt = req.body.prompt;
-    let signedUrl = '';
+    let key = '';
     if(!req.user)
     {
         return res.redirect("/login");
@@ -173,7 +140,7 @@ module.exports.displayHomePage = (req, res, next) => {
       let temp = pathdir.name;
       imageDescription = req.body.imageDescription;
       tempk1.splice(-1);
-      let key = tempk1.join('') + ext;
+      key = tempk1.join('') + ext;
       image.mv(temp, function(error) {
         if(error){
           throw error;
@@ -190,17 +157,15 @@ module.exports.displayHomePage = (req, res, next) => {
             throw err;
           }
           console.log('File uploaded successfully. ', data.Location);
-          signedUrl = s3.getSignedUrl('getObject', {Bucket: bucketName, Key: key});
         });
         pathdir.removeCallback();
       });
-      signedUrl = s3.getSignedUrl('getObject', {Bucket: bucketName, Key: key});
     }
     Prompt.create({
       isTask1: isTask1,
       isAcademic: isAcademic,
       imageDescription: imageDescription,
-      imageUrl: signedUrl,
+      imageUrl: key,
       promptMessage: prompt.split(regexp).join('&#13;&#10;'),
       isActive: true
     },(err, data) => {
@@ -212,4 +177,35 @@ module.exports.displayHomePage = (req, res, next) => {
     res.redirect("/admin/prompts");
   };
 
-  
+  module.exports.displayViewPage = (req, res, next) => {
+    if(!req.user)
+    {
+        return res.redirect("/login");
+    }
+    Prompt.findById(req.params.id, (err, prompt) => {
+      if(err){
+        console.log(err);
+        res.end(err);
+      }
+      let task = prompt.isTask1 ? 'Task 1' : 'Task 2';
+      let examType = prompt.examType ? 'Academic' : 'General';
+      let promptMessage = prompt.promptMessage.split('&#13;&#10;').join('\r\n');
+      let imageUrl = '';
+      if(prompt.isTask1 && prompt.isAcademic){
+        imageUrl = s3.getSignedUrl('getObject', {Bucket: bucketName, Key: prompt.imageUrl});
+      }
+      res.render('admin/view', {title: 'View Prompt',
+      username: req.user ? req.user.username: '', prompt: {
+        isTask1: prompt.isTask1,
+        isAcademic: prompt.isAcademic,
+        isActive: prompt.isActive,
+        task: task,
+        examType: examType,
+        imageDescription: prompt.imageDescription,
+        dateCreated: new Date(prompt.dateCreated).toLocaleString('en-US'),
+        imageUrl: imageUrl,
+        promptMessage: promptMessage,
+        status: prompt.isActive ? 'Active' : 'Inactive'
+      }});
+    });
+  };
