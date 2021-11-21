@@ -52,7 +52,6 @@ module.exports.displayHomePage = (req, res, next) => {
   };
 
   module.exports.displayTask1Page = (req, res, next) => {
-    console.log("here");
     if(!req.user)
     {
         return res.redirect("/login");
@@ -102,33 +101,46 @@ module.exports.displayHomePage = (req, res, next) => {
     {
         return res.redirect("/login");
     }
-    console.log(req.body.prompt);
-    console.log(req.files.imageInput.name);
     let image = req.files.imageInput;
-    let pathdir = tmp.dirSync();
-    let temp = pathdir.name + image.name;
+    let pathdir = tmp.fileSync();
+    let tempk0 = (new Date().toISOString() + image.name).toLowerCase();
+    let tempk1 = tempk0.split(/[^a-z0-9]/);
+    let ext = '.' + tempk1[tempk1.length - 1];
+    let temp = pathdir.name;
+    let signedUrl ='';
+    tempk1.splice(-1);
+    let key = tempk1.join('') + ext;
     image.mv(temp, function(error) {
       if(error){
         throw error;
-      }
-      const fileContent = fs.readFileSync(temp);
+    }});
+    const fileContent = fs.readFileSync(temp);
       let params = {
         Bucket: bucketName,
-        Key: req.files.imageInput.name,
+        Key: key,
         Body: fileContent
       };
-      s3.upload(params, function(err, data) {
+    s3.upload(params, function(err, data) {
+      if(err){
+        req.flash('createError', 'Upload Unsuccessful');
+        throw err;
+      }
+      console.log('File uploaded successfully. ', data.Location);
+      signedUrl = s3.getSignedUrl('getObject', {Bucket: bucketName, Key: key});
+      Prompt.create({
+        isTask1: true,
+        isAcademic: true,
+        imageDescription: req.body.imageDescription,
+        imageUrl: signedUrl,
+        promptMessage: req.body.prompt,
+        isActive: true
+      },(err, data) => {
         if(err){
-          throw err;
+          console.log(err);
+          res.end(err);
         }
-        console.log('File uploaded successfully. ', data.Location);
-        let signedUrl = s3.getSignedUrl('getObject', params);
-        console.log(signedUrl);
-
-
       });
     });
-    pathdir.removeCallback();
     res.redirect("/admin/home");
   };
 

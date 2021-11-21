@@ -46,5 +46,5 @@
 
 textarea{
     width: 70%;
-    height: 150px;
+    white-space: pre-wrap;
 }

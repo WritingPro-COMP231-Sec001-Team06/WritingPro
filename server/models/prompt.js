@@ -3,13 +3,17 @@ let mongoose = require('mongoose');
 let prompt = mongoose.Schema({
     isTask1: Boolean,
     isAcademic: Boolean,
-    dataType: String,
-    dateCreated: Date,
+    imageDescription: String,
+    dateCreated: {
+        type: Date,
+        default: Date.now()  
+    },
     imageUrl: String,
-    promptMessage: String
+    promptMessage: String,
+    isActive: Boolean
 },
 {
     collection: "Prompts"
 });
 
-module.exports = mongoose.model("Prompt", prompt);
+module.exports = mongoose.model("Prompts", prompt);

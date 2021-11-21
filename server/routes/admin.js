@@ -19,8 +19,10 @@ router.get("/admin/task1gen/add", adminController.displayAddTask1GenPage);
 
 router.get("/admin/task2/add", adminController.displayAddTask2Page);
 
-router.post("/admin/task1/add", adminController.processAddTask1AcadPage);
-
 router.get("/admin/task2", adminController.displayTask2Page);
+
+router.post("/admin/task1acad/add", adminController.processAddTask1AcadPage);
+
+
 
 module.exports = router;
