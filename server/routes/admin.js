@@ -11,7 +11,9 @@ router.get("/admin/pending", adminController.displayPendingPage);
 
 router.get("/admin/rejected", adminController.displayRejectedPage);
 
-router.get("/admin/task1", adminController.displayTask1Page);
+router.get("/admin/prompts", adminController.displayPromptsPage);
+
+router.get("/admin/prompts/create/:settings", adminController.displayCreatePromptPage);
 
 router.get("/admin/task1acad/add", adminController.displayAddTask1AcadPage);
 
@@ -21,7 +23,7 @@ router.get("/admin/task2/add", adminController.displayAddTask2Page);
 
 router.get("/admin/task2", adminController.displayTask2Page);
 
-router.post("/admin/task1acad/add", adminController.processAddTask1AcadPage);
+router.post("/admin/prompts/create/:settings", adminController.processCreatePromptPage);
 
 
 

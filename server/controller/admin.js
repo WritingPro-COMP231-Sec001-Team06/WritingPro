@@ -51,13 +51,44 @@ module.exports.displayHomePage = (req, res, next) => {
     username: req.user ? req.user.username: ''  });
   };
 
-  module.exports.displayTask1Page = (req, res, next) => {
+  module.exports.displayPromptsPage = (req, res, next) => {
     if(!req.user)
     {
         return res.redirect("/login");
     }
-    res.render("admin/task1", { title: "Task 1 Page", 
+    res.render("admin/prompts", { title: "Task 1 Page", 
     username: req.user ? req.user.username: ''  });
+  };
+
+  module.exports.displayCreatePromptPage = (req, res, next) => {
+    let settings = req.params.settings;
+    let isTask1 = true;
+    let isAcademic = false;
+    let title = '';
+    if(!req.user){
+      return res.redirect("/login");
+    }
+    if(settings === '1a'){
+      isTask1 = true;
+      isAcademic = true;
+      title = 'Create Task 1 Academic';
+    }
+    else if(settings === '1g'){
+      isTask1 = true,
+      isAcademic = false;
+      title = 'Create Task 1 General';
+    }
+    else if(settings === '2t'){
+      isTask1 = false,
+      isAcademic = true
+      title = 'Create Task 2';
+    }
+    else{
+      return res.redirect("/admin/prompts");
+    }
+    res.render("admin/create", { title: title, 
+    isTask1: isTask1,
+    isAcademic: isAcademic});
   };
 
   module.exports.displayTask2Page = (req, res, next) => {
@@ -96,52 +127,63 @@ module.exports.displayHomePage = (req, res, next) => {
     username: req.user ? req.user.username: ''  });
   };
 
-  module.exports.processAddTask1AcadPage = (req, res, next) => {
+  module.exports.processCreatePromptPage = (req, res, next) => {
+    let isTask1 = req.body.isTask1 === 'true' ? true : false;
+    let isAcademic = req.body.isAcademic === 'true' ? true : false;
+    let regexp = /\r\n/;
+    let prompt = req.body.prompt;
+    let signedUrl = '';
     if(!req.user)
     {
         return res.redirect("/login");
     }
-    let image = req.files.imageInput;
-    let pathdir = tmp.fileSync();
-    let tempk0 = (new Date().toISOString() + image.name).toLowerCase();
-    let tempk1 = tempk0.split(/[^a-z0-9]/);
-    let ext = '.' + tempk1[tempk1.length - 1];
-    let temp = pathdir.name;
-    let signedUrl ='';
-    tempk1.splice(-1);
-    let key = tempk1.join('') + ext;
-    image.mv(temp, function(error) {
-      if(error){
-        throw error;
-    }});
-    const fileContent = fs.readFileSync(temp);
-      let params = {
-        Bucket: bucketName,
-        Key: key,
-        Body: fileContent
-      };
-    s3.upload(params, function(err, data) {
-      if(err){
-        req.flash('createError', 'Upload Unsuccessful');
-        throw err;
-      }
-      console.log('File uploaded successfully. ', data.Location);
-      signedUrl = s3.getSignedUrl('getObject', {Bucket: bucketName, Key: key});
-      Prompt.create({
-        isTask1: true,
-        isAcademic: true,
-        imageDescription: req.body.imageDescription,
-        imageUrl: signedUrl,
-        promptMessage: req.body.prompt,
-        isActive: true
-      },(err, data) => {
-        if(err){
-          console.log(err);
-          res.end(err);
+    if(isTask1 && isAcademic)
+    {
+      let image = req.files.imageInput;
+      let pathdir = tmp.fileSync();
+      console.log(pathdir.name);
+      let tempk0 = (new Date().toISOString() + image.name).toLowerCase();
+      let tempk1 = tempk0.split(/[^a-z0-9]/);
+      let ext = '.' + tempk1[tempk1.length - 1];
+      let temp = pathdir.name;
+      tempk1.splice(-1);
+      let key = tempk1.join('') + ext;
+      image.mv(temp, function(error) {
+        if(error){
+          throw error;
         }
+        let fileContent = fs.readFileSync(temp);
+        let params = {
+          Bucket: bucketName,
+          Key: key,
+          Body: fileContent
+        };
+        s3.upload(params, function(err, data) {
+          if(err){
+            req.flash('createError', 'Upload Unsuccessful');
+            throw err;
+          }
+          console.log('File uploaded successfully. ', data.Location);
+          signedUrl = s3.getSignedUrl('getObject', {Bucket: bucketName, Key: key});
+        });
+        pathdir.removeCallback();
       });
+      signedUrl = s3.getSignedUrl('getObject', {Bucket: bucketName, Key: key});
+    }
+    Prompt.create({
+      isTask1: isTask1,
+      isAcademic: isAcademic,
+      imageDescription: req.body.imageDescription,
+      imageUrl: signedUrl,
+      promptMessage: prompt.split(regexp).join('&#13;&#10;'),
+      isActive: true
+    },(err, data) => {
+      if(err){
+        console.log(err);
+        res.end(err);
+      }
     });
-    res.redirect("/admin/home");
+    res.redirect("/admin/prompts");
   };
 
   
