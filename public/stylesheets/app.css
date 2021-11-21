@@ -19,7 +19,6 @@
     "footer footer";
     grid-template-columns: 4fr 16fr;
     grid-template-rows: 5fr 90fr 3fr;
-    gap: 5px;
     height: 100vh;
     padding: 5px 5px 0 5px;
 }
@@ -34,6 +33,7 @@
 
 .grid-main{
     grid-area: content;
+    margin: 0px 5px;
 }
 
 .grid-footer{
@@ -53,7 +53,11 @@ textarea{
     overflow-y: scroll;
 }
 .position-sticky{
+    width: 100%;
+    padding-bottom: 5px;
     position: -webkit-sticky;
     position: sticky;
-    top: 1px;
+    top: 0px;
+    z-index: 100000;
+    background-color: #f8f9fa;
 }
