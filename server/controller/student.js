@@ -34,7 +34,10 @@ module.exports.displayDashboardPage = (req, res, next) => {
       date: datestring,
       status: "Complete",
       type: "Academic",
-      promptTitle: ["This first prompt very very long long I'm gonna make it super long so I can test elipse", "Next prompt title"],
+      promptTitle: [
+        "This first prompt very very long long I'm gonna make it super long so I can test elipse",
+        "Next prompt title",
+      ],
     },
     {
       id: "52368",
@@ -52,12 +55,17 @@ module.exports.displayDashboardPage = (req, res, next) => {
       type: "General",
       promptTitle: ["Some of my prompts"],
     },
-
   ];
   res.render("student/dashboard", {
     title: "Dashboard",
     username: req.user ? req.user.username : "",
     essays: essays,
+  });
+};
+
+module.exports.displayTestYourself = (req, res, next) => {
+  res.render("student/test-yourself", {
+    title: "test-yourself",
   });
 };
 
