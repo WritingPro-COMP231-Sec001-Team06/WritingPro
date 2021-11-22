@@ -55,6 +55,9 @@
   <div class="row">
     <div class="col-10 vertical-line">
       <p class="m-0"><span class="fw-sb">Exam Type:</span> <em><%= prompts[i].examType %></em></p>
+      <% if(prompts[i].isTask1 && prompts[i].isAcademic) {%>
+        <p class="m-0"><span class="fw-sb">Image Description:</span> <em><%= prompts[i].imageDescription %></em></p>
+      <% } %>
       <p class="m-0"><span class="fw-sb">Task:</span> <em><%= prompts[i].task %></em></p>
       <p class="m-0"><span class="fw-sb">Prompt:</span> <em><%= prompts[i].promptMessage %></em></p>
       <p class="m-0"><span class="fw-sb">Date Created:</span> <em><%= prompts[i].dateCreated %></em></p>
@@ -65,14 +68,14 @@
       <% } %>
     </div>
     <div class="col ms-2 d-flex flex-column justify-content-center align-items-center">
-      <% if(prompts[i].isActive && prompts[i].isAcademic) { %>
+      <% if(prompts[i].isTask1 && prompts[i].isAcademic) { %>
       <a href="/admin/prompts/view/<%= prompts[i].id %>" class="btn btn-outline-primary lh-1 w-75 my-1">View</a>
       <% } %>
       <a href="/admin/prompts/edit/<%= prompts[i].id %>" class="btn btn-outline-warning lh-1 w-75 my-1">Edit</a>
       <% if(prompts[i].isActive) { %>
-        <a href="/admin/prompts/changestatus/<%= prompts[i].id %>" class="btn btn-outline-success lh-1 w-75 my-1">Deactivate</a>
+        <a href="/admin/prompts/changestatus/<%= prompts[i].id %>=<%= prompts[i].isActive %>" class="btn btn-outline-danger lh-1 w-75 my-1">Deactivate</a>
       <% } else { %>
-       <a href="/admin/prompts/changestatus/<%= prompts[i].id %>" class="btn btn-success lh-1 w-75 my-1">Activate</a>
+       <a href="/admin/prompts/changestatus/<%= prompts[i].id %>=<%= prompts[i].isActive %>" class="btn btn-outline-success lh-1 w-75 my-1">Activate</a>
        <% } %>
     </div>
   </div>

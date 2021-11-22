@@ -209,3 +209,90 @@ module.exports.displayHomePage = (req, res, next) => {
       }});
     });
   };
+
+  module.exports.displayEditPage = (req, res, next) => {
+    if(!req.user)
+    {
+        return res.redirect("/login");
+    }
+    Prompt.findById(req.params.id, (err, prompt) => {
+      if(err){
+        console.log(err);
+        res.end(err);
+      }
+      let task = prompt.isTask1 ? 'Task 1' : 'Task 2';
+      let examType = prompt.examType ? 'Academic' : 'General';
+      let promptMessage = prompt.promptMessage.split('&#13;&#10;').join('\r\n');
+      let imageUrl = '';
+      if(prompt.isTask1 && prompt.isAcademic){
+        imageUrl = s3.getSignedUrl('getObject', {Bucket: bucketName, Key: prompt.imageUrl});
+      }
+      res.render('admin/edit', {title: 'View Prompt',
+      username: req.user ? req.user.username: '', prompt: {
+        id: prompt._id,
+        isTask1: prompt.isTask1,
+        isAcademic: prompt.isAcademic,
+        isActive: prompt.isActive,
+        task: task,
+        examType: examType,
+        imageDescription: prompt.imageDescription,
+        dateCreated: new Date(prompt.dateCreated).toLocaleString('en-US'),
+        imageUrl: imageUrl,
+        promptMessage: promptMessage,
+        status: prompt.isActive ? 'Active' : 'Inactive'
+      }});
+    });
+  };
+
+  module.exports.processDeletePrompt = (req, res, next) => {
+    if(!req.user)
+    {
+        return res.redirect("/login");
+    }
+    Prompt.findByIdAndDelete(req.params.id, (err, id) => {
+      if(err){
+        console.log(error);
+        res.end(err);
+      }
+      if(id){
+        console.log("Deletion Successful...");
+      }
+    });
+    res.redirect('/admin/prompts');
+  };
+
+  module.exports.processSavePrompt = (req, res, next) => {
+    if(!req.user)
+    {
+        return res.redirect("/login");
+    }
+    Prompt.findByIdAndUpdate(req.body.id, {imageDescription: req.body.imageDescription, promptMessage: req.body.prompt}, (err, sucess) => {
+      if(err){
+        console.log(err);
+        res.end(err);
+      }
+      console.log('Update Successful...');
+      res.redirect('/admin/prompts');
+    });
+  };
+
+  module.exports.processPromptStatus = (req, res, next) => {
+    let data = req.params.id.split('=');
+    if(data.length !== 2){
+      return res.redirect("/admin/prompts");
+    }
+    let status = data[1] === "true" ? true : false;
+    if(!req.user)
+    {
+        return res.redirect("/login");
+    }
+    Prompt.findByIdAndUpdate(data[0], {isActive: !status}, (err, success) => {
+      if(err){
+        console.log(err);
+        res.end(err);
+      }
+      console.log('Change Status Successful...');
+      console.log(success.isActive);
+      res.redirect('/admin/prompts');
+    });
+  };

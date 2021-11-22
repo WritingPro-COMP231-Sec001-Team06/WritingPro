@@ -19,4 +19,12 @@ router.post("/admin/prompts/create/:settings", adminController.processCreateProm
 
 router.get("/admin/prompts/view/:id", adminController.displayViewPage);
 
+router.get("/admin/prompts/edit/:id", adminController.displayEditPage);
+
+router.get("/admin/prompts/delete/:id", adminController.processDeletePrompt);
+
+router.post("/admin/prompts/edit/:id", adminController.processSavePrompt);
+
+router.get("/admin/prompts/changestatus/:id", adminController.processPromptStatus);
+
 module.exports = router;
