@@ -19,20 +19,23 @@
       <form method="POST">
         <div class="d-flex align-items-center">
           <h5 class="my-auto">Filter: </h5>
-          <select class="form-select lh-1 mx-1"  name="filterStatus" aria-label="Filter Status" value="true">
-            <option value="" hidden>Status</option>
-            <option value="true">Active</option>
-            <option value="false">Inactive</option>
+          <select class="form-select lh-1 mx-1"  name="filterStatus" aria-label="Filter Status">
+            <option value="<%= filterStatus.value %>" hidden><%= filterStatus.display %></option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+            <option value="none">None</option>
           </select>
           <select class="form-select lh-1 mx-1" name="filterTask" aria-label="Filter Task">
-            <option value="" hidden>Task</option>
-            <option value="true">Task 1</option>
-            <option value="false">Task 2</option>
+            <option value="<%= filterTask.value %>" hidden><%= filterTask.display %></option>
+            <option value="task1">Task 1</option>
+            <option value="task2">Task 2</option>
+            <option value="none">None</option>
           </select>
           <select class="form-select lh-1 mx-1" name="filterType" aria-label="Filter Type">
-            <option value="" hidden>Exam Type</option>
-            <option value="true">Academic</option>
-            <option value="false">General</option>
+            <option value="<%= filterType.value %>" hidden><%= filterType.display %></option>
+            <option value="academic">Academic</option>
+            <option value="general">General</option>
+            <option value="none">None</option>
           </select>
           <button type="submit" class="btn btn-outline-info lh-1 mx-1">Filter</button>
         </div>
