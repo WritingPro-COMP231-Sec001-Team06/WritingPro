@@ -13,6 +13,8 @@ router.get("/admin/rejected", adminController.displayRejectedPage);
 
 router.get("/admin/prompts", adminController.displayPromptsPage);
 
+router.post("/admin/prompts", adminController.processPromptFilter);
+
 router.get("/admin/prompts/create/:settings", adminController.displayCreatePromptPage);
 
 router.post("/admin/prompts/create/:settings", adminController.processCreatePromptPage);

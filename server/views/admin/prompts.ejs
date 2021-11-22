@@ -10,41 +10,41 @@
     <div class="col-4">
       <div class="d-flex align-items-center">
       <h5 class="my-auto">Create: </h5>
-      <a class="btn btn-primary lh-1 mx-1" href="/admin/prompts/create/1a">Academic Task 1</a><hr>
-      <a class="btn btn-primary lh-1 mx-1" href="/admin/prompts/create/1g">Genereal Task 1</a><hr>
-      <a class="btn btn-primary lh-1 mx-1" href="/admin/prompts/create/2t">Task 2</a><hr>
+      <a class="btn btn-outline-primary lh-1 mx-1" href="/admin/prompts/create/1a">Academic Task 1</a><hr>
+      <a class="btn btn-outline-primary lh-1 mx-1" href="/admin/prompts/create/1g">Genereal Task 1</a><hr>
+      <a class="btn btn-outline-primary lh-1 mx-1" href="/admin/prompts/create/2t">Task 2</a><hr>
       </div>
     </div>
     <div class="col">
       <form method="POST">
         <div class="d-flex align-items-center">
           <h5 class="my-auto">Filter: </h5>
-          <select class="form-select lh-1 mx-1"  name="filterStatus" aria-label="Filter Status">
+          <select class="form-select lh-1 mx-1"  name="filterStatus" aria-label="Filter Status" value="true">
             <option value="" hidden>Status</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
           </select>
           <select class="form-select lh-1 mx-1" name="filterTask" aria-label="Filter Task">
             <option value="" hidden>Task</option>
-            <option value="task1">Task 1</option>
-            <option value="task2">Task 2</option>
+            <option value="true">Task 1</option>
+            <option value="false">Task 2</option>
           </select>
           <select class="form-select lh-1 mx-1" name="filterType" aria-label="Filter Type">
             <option value="" hidden>Exam Type</option>
-            <option value="aca">Academic</option>
-            <option value="gen">General</option>
+            <option value="true">Academic</option>
+            <option value="false">General</option>
           </select>
           <select class="form-select lh-1 mx-1" name="filterOrderBy" aria-label="Filter Type">
-            <option value="" hidden>Order By(Task 1 Academic)</option>
-            <option value="dateCreated">Date Created</option>
-            <option value="">Chart Type</option>
+            <option value="" hidden>Order By(Default: Date)</option>
+            <option value="dateCreated">Date</option>
+            <option value="">Chart(Academic Task 1)</option>
           </select>
           <select class="form-select lh-1 mx-1" name="filterOrder" aria-label="Filter Type">
             <option value="" hidden>Order</option>
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
           </select>
-          <button type="submit" class="btn btn-primary lh-1 mx-1">Submit</button>
+          <button type="submit" class="btn btn-outline-info lh-1 mx-1">Filter</button>
         </div>
       </form>
     </div>
@@ -64,7 +64,7 @@
       <% if(prompts[i].isActive) { %>
         <p class="m-0"><span class="fw-sb">Status:</span> <span class="active"><%= prompts[i].status %></span></p>
       <% } else { %>
-        <p class="m-0"></p><span class="fw-sb">Status:</span> <span class="inactive"><%= prompts[i].status %></span></p>
+        <p class="m-0"><span class="fw-sb">Status:</span> <span class="inactive"><%= prompts[i].status %></span></p>
       <% } %>
     </div>
     <div class="col ms-2 d-flex flex-column justify-content-center align-items-center">

@@ -86,6 +86,7 @@ textarea{
 }
 .inactive{
     color: rgb(168, 54, 54);
+    font-weight: 700;
 }
 .vertical-line{
     border-right: 1px solid rgba(0,0,0,.125);

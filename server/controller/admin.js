@@ -296,3 +296,50 @@ module.exports.displayHomePage = (req, res, next) => {
       res.redirect('/admin/prompts');
     });
   };
+
+  module.exports.processPromptFilter = (req, res, next) => {
+    if(!req.user)
+    {
+        return res.redirect("/login");
+    }
+    let filter = {};
+    if(!/^\s*$/.test(req.body.filterStatus)){
+      filter.isActive = req.body.filterStatus === 'true' ? true : false;
+    }
+    if(!/^\s*$/.test(req.body.filterTask)){
+      filter.isTask1 = req.body.filterTask === 'true' ? true : false;
+    }
+    if(!/^\s*$/.test(req.body.filterType)){
+      filter.isAcademic = req.body.filterType === 'true' ? true : false;
+    }
+    Prompt.find(filter, (err, prompts) => {
+      if(err){
+        console.log(err);
+        res.end(err);
+      }
+      console.log(prompts);
+      let mappedPrompts = prompts.map( prompt => {
+        let task = prompt.isTask1 ? 'Task 1' : 'Task 2';
+        let examType = prompt.isAcademic ? 'Academic' : 'General';
+        let promptMessage = prompt.promptMessage.split('&#13;&#10;').join('\r\n');
+        return {
+          id: prompt._id,
+          isTask1: prompt.isTask1,
+          isAcademic: prompt.isAcademic,
+          isActive: prompt.isActive,
+          task: task,
+          examType: examType,
+          imageDescription: prompt.imageDescription,
+          dateCreated: new Date(prompt.dateCreated).toLocaleString('en-US'),
+          imageUrl: prompt.imageUrl,
+          promptMessage: promptMessage,
+          status: prompt.isActive ? 'Active' : 'Inactive'
+        };
+      });
+      res.render('admin/prompts', {
+        title: "Prompts",
+        prompts: mappedPrompts,
+        username: req.user ? req.user.username: ''
+      });
+    });
+  };
