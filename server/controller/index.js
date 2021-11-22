@@ -168,14 +168,21 @@ module.exports.displayAdminLoginPage = (req, res, next) => {
             req.flash('loginMessage', 'Authentication Error');
             return res.redirect('/adminLogin');
         }
+        if(user.username =='admin@admin.com'){
         req.login(user, (err) => {
             //server error?
             if(err)
             {
                 return next(err);
             }
+            
             return res.redirect('/admin');
-        });
+            
+        });}
+        else{
+            req.flash('loginMessage', 'Not a valid Admin ID');
+            return res.redirect('/adminLogin');
+        }
     })(req, res, next);
   
   }
