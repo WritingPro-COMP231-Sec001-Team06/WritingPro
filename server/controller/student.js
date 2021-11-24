@@ -80,106 +80,128 @@ module.exports.displayTestYourselfMultiple = (req, res, next) => {
     title: "test-yourself",
   });
 };
+module.exports.displayFeedbacks = (req, res, next) => {
+  let randomDate = new Date(2021, 11, 10);
 
-/*
-module.exports.displayLoginPage = (req, res, next) => {
-  // check if the user is already logged in
-  if (!req.user) {
-    res.render("auth/login", {
-      title: "Login",
-      messages: req.flash("loginMessage"),
-      username: req.user ? req.user.username : "",
-    });
-  } else {
-    return res.redirect("/");
-  }
-};
+  let month = [
+    "Jan",
+    "Fab",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  let datestring = `${
+    month[randomDate.getMonth() - 1]
+  } ${randomDate.getDate()}, ${randomDate.getFullYear()}`;
 
-module.exports.processLoginPage = (req, res, next) => {
-  passport.authenticate("local", (err, user, info) => {
-    // server error?
-    if (err) {
-      return next(err);
-    }
-    // is there a visitor login error?
-    if (!user) {
-      req.flash("loginMessage", "Authentication Error");
-      return res.redirect("/login");
-    }
-    req.login(user, (err) => {
-      //server error?
-      if (err) {
-        return next(err);
-      }
-      return res.redirect("/");
-    });
-  })(req, res, next);
-};
-
-module.exports.displayRegisterPage = (req, res, next) => {
-  // check if the user is not already logged in
-  if (!req.user) {
-    console.log("Here1");
-    res.render("auth/register", {
-      title: "Register",
-      messages: req.flash("registerMessage"),
-      username: req.user ? req.user.username : "",
-    });
-  } else {
-    console.log("Here2");
-    return res.redirect("/");
-  }
-};
-
-module.exports.processRegisterPage = (req, res, next) => {
-  // instantiate a visitor object
-
-  let newVisitor = new Visitor({
-    username: req.body.username,
-    //password cover
-    //password: req.body,password,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    address: req.body.address,
-    city: req.body.city,
-    country: req.body.country,
-    firstLanguage: req.body.firstLanguage,
-    startingIELTSLevel: req.body.startingIELTSLevel,
-    targetScore: req.body.targetScore,
-    targetTestCountry: req.body.targetTestCountry,
-    //displayName: req.body.displayName
-  });
-
-  console.log(newVisitor);
-
-  Visitor.register(newVisitor, req.body.password, (err) => {
-    if (err) {
-      // seems no problem in data
-      console.log("Error: Inserting New Visitor");
-      console.log(err);
-      if (err.name == "UserExistError") {
-        req.flash(
-          "registerMessage",
-          "Registration Error: Visitor Already Exists!"
-        );
-        console.log("Error: Visitor Already Exists!");
-      }
-      return res.redirect("/register");
-    } else {
-      //if no error exists, then registration is successful
-
-      // redirect the user and authenticate them
-
-      return passport.authenticate("local")(req, res, () => {
-        res.redirect("/");
-        console.log("success register");
-      });
-    }
+  // example essay
+  let essays = [
+    {
+      id: "15236",
+      title: "My first essay title",
+      potentialScore: 5,
+      date: datestring,
+      status: "Complete",
+      type: "Academic",
+      promptTitle: [
+        "This first prompt very very long long I'm gonna make it super long so I can test elipse",
+        "Next prompt title",
+      ],
+      content: [
+        `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
+        `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
+      ],
+    },
+    {
+      id: "52368",
+      title: "My second some title",
+      potentialScore: 6,
+      date: datestring,
+      status: "Not assigned yet",
+      type: "General",
+      promptTitle: ["Some of my prompts"],
+      content: [
+        `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
+      ],
+    },
+    {
+      id: "23451",
+      title: "My second some title",
+      potentialScore: 3,
+      date: datestring,
+      status: "Under review",
+      type: "General",
+      promptTitle: ["Some of my prompts"],
+      content: [
+        `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
+      ],
+    },
+  ];
+  res.render("student/feedbacks", {
+    title: "Pending Feedbacks",
+    username: req.user ? req.user.username : "",
+    essays: essays,
   });
 };
+module.exports.displayFeedback = (req, res, next) => {
+  let randomDate = new Date(2021, 11, 10);
 
-module.exports.performLogout = (req, res, next) => {
-  req.logout();
-  res.redirect("/login");
+  let month = [
+    "Jan",
+    "Fab",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  let datestring = `${
+    month[randomDate.getMonth() - 1]
+  } ${randomDate.getDate()}, ${randomDate.getFullYear()}`;
+
+  let instructor = {
+    id: "51252",
+    date: datestring,
+    feedback: "Perfect!",
+    correctedBody: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+  }
+
+  // example essay
+  let essay =
+    {
+      id: "15236",
+      title: "My first essay title",
+      potentialScore: 5,
+      date: datestring,
+      status: "Complete",
+      type: "Academic",
+      instructor: instructor,
+      promptTitle: [
+        "This first prompt very very long long I'm gonna make it super long so I can test elipse",
+        "Next prompt title",
+      ],
+      content: [
+        `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
+        `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
+      ],
+    };
+  res.render("student/feedback-detail", {
+    title: "Pending Feedbacks",
+    username: req.user ? req.user.username : "",
+    essay: essay,
+  });
 };
-*/
