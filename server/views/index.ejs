@@ -1,22 +1,9 @@
-<%- include partials/top.ejs %>
-<%- include partials/navbar.ejs %>
-<div class="text-center">
-    <h1 class="d-none"><%= title %></h1>
+<%- include partials/header.ejs %>
+<div class="layout">
+<%- include partials/main_nav.ejs %>
 
-    <!--
-        <form method="post">
-        <input type="submit" value="Create"/>
-    </form>
-    -->
-    <h2 class="display-5 my-5">Welcome!</h2>
-    <div class="card mx-auto" style="width: 18rem;">
-        <div class="card-body">
-          <h5 class="card-title">Home page title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
+<main class="grid-main">Content</main>
+
+<%- include partials/bottom_nav.ejs %>
 </div>
-
-
-<%- include partials/bottom.ejs %>
+<%- include partials/footer.ejs %>

@@ -1,0 +1,61 @@
+<%- include ../partials/header.ejs %>
+<div class="logged-layout">
+<%- include ../partials/main_nav.ejs %>
+<%- include ../partials/sidenav/prompts.ejs %>
+
+<main class="grid-main">
+  <h4><%= title %></h4>
+  <div class ="container">
+    <% if(isTask1 && isAcademic) { %>
+      <form method="POST" enctype="multipart/form-data">
+        <input name="isTask1" type="text" value= true hidden>
+        <input name="isAcademic" type="text" value= true hidden>
+        <div class="form-group">
+          <input name="imageInput" type="file" accept="image/*" onchange="loadFile(event)" required>
+          <br>
+          <img class="img-preview d-block align-items-center" id="output"/>
+        </div>
+        <br>
+        <fieldset class="form-group">
+          <label for="imageDescription"> Image Description </label><br>
+          <input class=" img-preview" type="text" class="form-control" name="imageDescription" placeholder="Type of Chart" required>
+        </fieldset>
+        <br>
+        <div class="form-group">
+          <label for="prompt">Prompt:</label><br>
+          <textarea id="prompt" name="prompt" rows="10" placeholder="Enter Prompt..." required></textarea>
+        </div>
+        <br>
+          <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    <% } else if (isTask1 && !isAcademic){%> 
+      <form method="POST" enctype="multipart/form-data">
+        <input name="isTask1" type="text" value= true hidden>
+        <input name="isAcademic" type="text" value= false hidden>
+        <br>
+        <div class="form-group">
+          <label for="prompt">Prompt:</label><br>
+          <textarea id="prompt" name="prompt" rows="10" placeholder="Enter Prompt..." required></textarea>
+        </div>
+        <br>
+          <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    <% } else if (!isTask1){%> 
+      <form method="POST" enctype="multipart/form-data">
+        <input name="isTask1" type="text" value= false hidden>
+        <input name="isAcademic" type="text" value= true hidden>
+        <br>
+        <div class="form-group">
+          <label for="prompt">Prompt:</label><br>
+          <textarea id="prompt" name="prompt" rows="10" placeholder="Enter Prompt..." required></textarea>
+        </div>
+        <br>
+          <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    <% } %>   
+  </div>
+</main>
+
+<%- include ../partials/bottom_nav.ejs %>
+</div>
+<%- include ../partials/footer.ejs %>

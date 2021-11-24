@@ -1,0 +1,37 @@
+<%- include ../partials/header.ejs %>
+<div class="logged-layout">
+<%- include ../partials/main_nav.ejs %>
+<%- include ../partials/sidenav/prompts.ejs %>
+
+<main class="grid-main">
+  <form method="POST" enctype="multipart/form-data">
+  <input name="id" value="<%= prompt.id %>" hidden>
+    <% if(prompt.isTask1 && prompt.isAcademic) { %>
+      <div class="form-group">
+        <img class="img-preview d-block align-items-center" src="<%= prompt.imageUrl %>"/>
+      </div>
+      <br>
+      <fieldset class="form-group">
+        <label for="imageDescription"> Image Description </label><br>
+        <input class=" img-preview" type="text" class="form-control" name="imageDescription" value="<%= prompt.imageDescription %>" required>
+      </fieldset>
+    <% } else{ %>
+      <input type="text"name="imageDescription" value="" hidden>
+    <% } %>
+    <br>
+    <div class="form-group">
+      <label for="prompt">Prompt:</label><br>
+      <textarea id="prompt" name="prompt" rows="10" required><%= prompt.promptMessage %></textarea>
+    </div>
+    <br>
+    <div class="d-flex justify-content-end img-preview">
+      <button type="submit" class="btn btn-outline-primary lh-1 mx-1">Save Changes</button>
+      <a class="btn btn-outline-danger lh-1 mx-1" href="/admin/prompts/delete/<%= prompt.id %>">Delete</a>
+      <a class="btn btn-outline-success lh-1 mx-1" href="/admin/prompts">Cancel</a>
+    </div>
+  </form>
+</main>
+
+<%- include ../partials/bottom_nav.ejs %>
+</div>
+<%- include ../partials/footer.ejs %>
