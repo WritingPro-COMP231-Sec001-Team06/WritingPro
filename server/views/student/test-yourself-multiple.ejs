@@ -1,0 +1,167 @@
+<%- include ../partials/top.ejs %>
+<%- include ../partials/navbar.ejs %>
+<ul class="nav nav-tabs mx-5 mt-5 border-bottom-0">
+    <li class="nav-item">
+        <a class="nav-link h-100 active" id="task1-item" onclick="switchTask(1)">Task 1</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link h-100" id="task2-item" onclick="switchTask(2)">Task 2</a>
+    </li>
+    <li class="nav-item ms-auto border border-bottom-0 px-3 py-2">
+        <span>Timer: </span>
+        <span id="timer"></span>
+    </li>
+</ul>
+
+<div class="d-flex p-5 mx-5 border" id="prompt-container">
+    <div class="w-25">
+        <p class="fs-5">Prompt:</p>
+        <p class="my-4">
+            The graph gives information about the age of the population of Iceland between 1990 and 2020.
+
+            Summarise the information by selecting and reporting the main features, and make comparisons where
+            relevant.
+        </p>    
+        <img src="https://www.english-exam.org/images/graphs/IELTS_Writing_Task_1_BarChart-189.png" alt=""
+            width="100%">
+    </div>
+    <div class="flex-grow-1 ms-5">
+        <div class="d-flex">
+
+            <div class="border px-3 py-2 mb-2 text-center ms-auto">
+                <span class="d-block">Word Count</span>
+                <span id="word-counter">0</span>
+            </div>
+        </div>
+        <div class="mb-3">
+            <textarea class="form-control w-100" id="writing" rows="3" oninput="countWord()"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary d-block ms-auto">Submit</button>
+    </div>
+</div>
+
+<script>
+    let timer = document.getElementById('timer');
+    let wordCounter = document.getElementById('word-counter');
+    let prevPage = 1;
+
+    let task1Writing = '';
+    let task2Writing = '';
+
+    // Set the date we're counting down to
+    var countDownDate = new Date().getTime();
+
+    // Update the count down every 1 second
+    var x = setInterval(function () {
+
+        // Get today's date and time
+        var now = new Date().getTime();
+
+        // Find the distance between now and the count down date
+        var distance = now - countDownDate;
+
+        // Time calculations for hours, minutes and seconds
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        timer.innerText = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }, 1000);
+
+    function countWord() {
+        let writing = document.getElementById('writing').value;
+        let wordCounter = document.getElementById('word-counter');
+        wordCounter.innerText = writing.length && writing.split(/\s+\b/).length || 0;
+    }
+
+    function switchTask(taskNumber) {
+        let promptContainer = document.getElementById('prompt-container');
+        let task1 = document.getElementById('task1-item');
+        let task2 = document.getElementById('task2-item');
+
+        // works only when the selected page number has been changed
+        if(prevPage != taskNumber) {
+            prevPage = taskNumber;
+
+            if(taskNumber === 1) {
+            console.log('task1 cicked');
+            if(!task1.classList.contains('active'))
+                task1.classList.add('active');
+            task2.classList.remove('active');
+
+            task2Writing = document.getElementById('writing').value;
+
+            promptContainer.innerHTML = `
+        <div class="w-25">
+        <p class="fs-5">Prompt:</p>
+        <p class="my-4">
+            The graph gives information about the age of the population of Iceland between 1990 and 2020.
+
+            Summarise the information by selecting and reporting the main features, and make comparisons where
+            relevant.
+        </p>
+        <img src="https://www.english-exam.org/images/graphs/IELTS_Writing_Task_1_BarChart-189.png" alt=""
+            width="100%">
+    </div>
+    <div class="flex-grow-1 ms-5">
+        <div class="d-flex">
+
+            <div class="border px-3 py-2 mb-2 text-center ms-auto">
+                <span class="d-block">Word Count</span>
+                <span id="word-counter">0</span>
+            </div>
+        </div>
+        <div class="mb-3">
+            <textarea class="form-control w-100" id="writing" rows="3" oninput="countWord()">${task1Writing}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary d-block ms-auto">Submit</button>
+    </div>
+        `;
+        let task1TArea = document.getElementById('writing');
+        console.log(task1Writing);
+        task1TArea.innerText = task1Writing;
+        }
+        else {
+            if(!task2.classList.contains('active'))
+                task2.classList.add('active');
+            task1.classList.remove('active');
+            console.log('task2 cicked --- task1 writing: ', document.getElementById('writing').value);
+            
+            task1Writing = document.getElementById('writing').value;
+
+            promptContainer.innerHTML = `
+        <div class="w-25">
+        <p class="fs-5">Prompt:</p>
+        <p class="my-4">
+            The graph gives information about the age of the population of Iceland between 1990 and 2020.
+
+            Summarise the information by selecting and reporting the main features, and make comparisons where
+            relevant.
+        </p>
+    </div>
+    <div class="flex-grow-1 ms-5">
+        <div class="d-flex">
+
+            <div class="border px-3 py-2 mb-2 text-center ms-auto">
+                <span class="d-block">Word Count</span>
+                <span id="word-counter">0</span>
+            </div>
+        </div>
+        <div class="mb-3">
+            <textarea class="form-control w-100" id="writing" rows="3" oninput="countWord()"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary d-block ms-auto">Submit</button>
+    </div>
+        `;
+
+            let task2TArea = document.getElementById('writing');
+            task2TArea.innerHTML = task2Writing;
+            
+            }
+        }
+        
+        countWord();
+        
+    }
+</script>
+<%- include ../partials/bottom.ejs %>

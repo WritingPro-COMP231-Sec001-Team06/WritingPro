@@ -63,8 +63,20 @@ module.exports.displayDashboardPage = (req, res, next) => {
   });
 };
 
-module.exports.displayTestYourself = (req, res, next) => {
-  res.render("student/test-yourself", {
+module.exports.displayTestYourselfCustomization = (req, res, next) => {
+  res.render("student/test-yourself-customization", {
+    title: "test-yourself",
+  });
+};
+
+module.exports.displayTestYourselfSingle = (req, res, next) => {
+  res.render("student/test-yourself-single", {
+    title: "test-yourself",
+  });
+};
+
+module.exports.displayTestYourselfMultiple = (req, res, next) => {
+  res.render("student/test-yourself-multiple", {
     title: "test-yourself",
   });
 };
