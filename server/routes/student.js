@@ -8,6 +8,12 @@ router.get("/", studentController.displayDashboardPage);
 router.get("/dashboard", studentController.displayDashboardPage);
 // GET - /student/test-yourself
 router.get("/test-yourself", studentController.displayTestYourselfCustomization);
+// POST - /student/test-yourself
+router.post("/test-yourself", studentController.processTestYourselfCustomization);
+// POST - /student/test-yourself/submit
+router.post("/test-yourself-single/submit", studentController.submitSingleEssay);
+// POST - /student/test-yourself/submit
+router.post("/test-yourself-multiple/submit", studentController.submitEssays);
 // GET - /student/test-yourself/test/single
 router.get("/test-yourself/test/single", studentController.displayTestYourselfSingle);
 // GET - /student/test-yourself/test/multiple

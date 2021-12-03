@@ -1,5 +1,5 @@
-<%- include ../partials/top.ejs %>
-<%- include ../partials/navbar.ejs %>
+<%- include ../partials/header.ejs %>
+<%- include ../partials/main_nav.ejs %>
 <ul class="nav nav-tabs mx-5 mt-5 border-bottom-0">
     <li class="nav-item">
         <a class="nav-link h-100 active" id="task1-item" onclick="switchTask(1)">Task 1</a>
@@ -13,155 +13,129 @@
     </li>
 </ul>
 
-<div class="d-flex p-5 mx-5 border" id="prompt-container">
-    <div class="w-25">
-        <p class="fs-5">Prompt:</p>
-        <p class="my-4">
-            The graph gives information about the age of the population of Iceland between 1990 and 2020.
 
-            Summarise the information by selecting and reporting the main features, and make comparisons where
-            relevant.
-        </p>    
-        <img src="https://www.english-exam.org/images/graphs/IELTS_Writing_Task_1_BarChart-189.png" alt=""
-            width="100%">
-    </div>
-    <div class="flex-grow-1 ms-5">
-        <div class="d-flex">
 
-            <div class="border px-3 py-2 mb-2 text-center ms-auto">
-                <span class="d-block">Word Count</span>
-                <span id="word-counter">0</span>
-            </div>
-        </div>
-        <div class="mb-3">
-            <textarea class="form-control w-100" id="writing" rows="3" oninput="countWord()"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary d-block ms-auto">Submit</button>
-    </div>
+
+<div class="w3-bar w3-black">
+    <button class="w3-bar-item w3-button" onclick="openTab(0)">1</button>
+    <button class="w3-bar-item w3-button" onclick="openTab(1)">2</button>
 </div>
+
+<form action="test-yourself-multiple/submit" method="post">
+    <div id="1" class="d-flex p-5 mx-5 border task-tab d-block">
+        <div class="w-25">
+            <p class="fs-5">Prompt1:</p>
+        <input type="hidden" name="prompt1Id" value="<%= prompt1Id %>">
+            <p class="my-4">
+                <%= body1 %>
+            </p>
+            <img src="https://www.english-exam.org/images/graphs/IELTS_Writing_Task_1_BarChart-189.png" alt=""
+                width="100%">
+        </div>
+        <div class="flex-grow-1 ms-5">
+            <div class="d-flex">
+
+                <div class="border px-3 py-2 mb-2 text-center ms-auto">
+                    <span class="d-block">Word Count</span>
+                    <span id="word-counter1">0</span>
+                </div>
+            </div>
+            <div class="mb-3">
+                <textarea name="task1Writing" class="form-control w-100" id="task1-writing" rows="5"
+                    oninput="countWord()"></textarea>
+            </div>
+
+            <input type="hidden" name="wordCount1" id="word-count-input1">
+            <input type="hidden" name="type" value="<%= type %>">
+            <button type="submit" class="btn btn-primary d-block ms-auto">Submit</button>
+        </div>
+    </div>
+
+    <div id="2" class="d-flex p-5 mx-5 border task-tab d-none">
+        <div class="w-25">
+            <p class="fs-5">Prompt2:</p>
+        <input type="hidden" name="prompt2Id" value="<%= prompt2Id %>">
+            <p class="my-4">
+                <%= body2 %>
+            </p>
+        </div>
+        <div class="flex-grow-1 ms-5">
+            <div class="d-flex">
+
+                <div class="border px-3 py-2 mb-2 text-center ms-auto">
+                    <span class="d-block">Word Count</span>
+                    <span id="word-counter2">0</span>
+                </div>
+            </div>
+            <div class="mb-3">
+                <textarea class="form-control w-100" id="task2-writing" name="task2Writing" rows="5"
+                    oninput="countWord()"></textarea>
+            </div>
+
+            <input type="hidden" name="wordCount2" id="word-count-input2">
+            <button type="submit" class="btn btn-primary d-block ms-auto">Submit</button>
+        </div>
+    </div>
+</form>
+
 
 <script>
     let timer = document.getElementById('timer');
-    let wordCounter = document.getElementById('word-counter');
-    let prevPage = 1;
-
-    let task1Writing = '';
-    let task2Writing = '';
+    let deadline = new Date();
+    deadline.setMinutes(deadline.getMinutes() + <%= time %>);
 
     // Set the date we're counting down to
     var countDownDate = new Date().getTime();
 
     // Update the count down every 1 second
     var x = setInterval(function () {
-
         // Get today's date and time
-        var now = new Date().getTime();
+        let now = new Date().getTime();
 
         // Find the distance between now and the count down date
-        var distance = now - countDownDate;
+        let elipse = deadline - now;
 
         // Time calculations for hours, minutes and seconds
-        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        let hours = Math.floor((elipse % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        let minutes = Math.floor((elipse % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((elipse % (1000 * 60)) / 1000);
 
-        timer.innerText = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    }, 1000);
+        timer.innerText =
+            `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+    }, 1000)
 
     function countWord() {
-        let writing = document.getElementById('writing').value;
-        let wordCounter = document.getElementById('word-counter');
-        wordCounter.innerText = writing.length && writing.split(/\s+\b/).length || 0;
+        let writing1 = document.getElementById('task1-writing').value;
+        let wordCounter1 = document.getElementById('word-counter1');
+        let wordCounterInput1 = document.getElementById('word-count-input1');
+        let wordCountValue1 = writing1.length && writing1.split(/\s+\b/).length || 0;
+        wordCounterInput1.value = wordCountValue1;
+        wordCounter1.innerText = wordCountValue1;
+        console.log("value: ", wordCountValue1);
+
+        let writing2 = document.getElementById('task2-writing').value;
+        let wordCounter2 = document.getElementById('word-counter2');
+        let wordCounterInput2 = document.getElementById('word-count-input2');
+        let wordCountValue2 = writing2.length && writing2.split(/\s+\b/).length || 0;
+        wordCounterInput2.value = wordCountValue2;
+        wordCounter2.innerText = wordCountValue2;
     }
 
-    function switchTask(taskNumber) {
-        let promptContainer = document.getElementById('prompt-container');
-        let task1 = document.getElementById('task1-item');
-        let task2 = document.getElementById('task2-item');
 
-        // works only when the selected page number has been changed
-        if(prevPage != taskNumber) {
-            prevPage = taskNumber;
-
-            if(taskNumber === 1) {
-            console.log('task1 cicked');
-            if(!task1.classList.contains('active'))
-                task1.classList.add('active');
-            task2.classList.remove('active');
-
-            task2Writing = document.getElementById('writing').value;
-
-            promptContainer.innerHTML = `
-        <div class="w-25">
-        <p class="fs-5">Prompt:</p>
-        <p class="my-4">
-            The graph gives information about the age of the population of Iceland between 1990 and 2020.
-
-            Summarise the information by selecting and reporting the main features, and make comparisons where
-            relevant.
-        </p>
-        <img src="https://www.english-exam.org/images/graphs/IELTS_Writing_Task_1_BarChart-189.png" alt=""
-            width="100%">
-    </div>
-    <div class="flex-grow-1 ms-5">
-        <div class="d-flex">
-
-            <div class="border px-3 py-2 mb-2 text-center ms-auto">
-                <span class="d-block">Word Count</span>
-                <span id="word-counter">0</span>
-            </div>
-        </div>
-        <div class="mb-3">
-            <textarea class="form-control w-100" id="writing" rows="3" oninput="countWord()">${task1Writing}</textarea>
-        </div>
-        <button type="submit" class="btn btn-primary d-block ms-auto">Submit</button>
-    </div>
-        `;
-        let task1TArea = document.getElementById('writing');
-        console.log(task1Writing);
-        task1TArea.innerText = task1Writing;
+    function openTab(tab) {
+        var x = document.getElementsByClassName("task-tab");
+        if (tab == 0) {
+            x[0].classList.add('d-block');
+            x[0].classList.remove('d-none');
+            x[1].classList.add('d-none');
+            x[1].classList.remove('d-block');
+        } else {
+            x[0].classList.remove('d-block');
+            x[0].classList.add('d-none');
+            x[1].classList.remove('d-none');
+            x[1].classList.add('d-block');
         }
-        else {
-            if(!task2.classList.contains('active'))
-                task2.classList.add('active');
-            task1.classList.remove('active');
-            console.log('task2 cicked --- task1 writing: ', document.getElementById('writing').value);
-            
-            task1Writing = document.getElementById('writing').value;
-
-            promptContainer.innerHTML = `
-        <div class="w-25">
-        <p class="fs-5">Prompt:</p>
-        <p class="my-4">
-            The graph gives information about the age of the population of Iceland between 1990 and 2020.
-
-            Summarise the information by selecting and reporting the main features, and make comparisons where
-            relevant.
-        </p>
-    </div>
-    <div class="flex-grow-1 ms-5">
-        <div class="d-flex">
-
-            <div class="border px-3 py-2 mb-2 text-center ms-auto">
-                <span class="d-block">Word Count</span>
-                <span id="word-counter">0</span>
-            </div>
-        </div>
-        <div class="mb-3">
-            <textarea class="form-control w-100" id="writing" rows="3" oninput="countWord()"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary d-block ms-auto">Submit</button>
-    </div>
-        `;
-
-            let task2TArea = document.getElementById('writing');
-            task2TArea.innerHTML = task2Writing;
-            
-            }
-        }
-        
-        countWord();
-        
     }
 </script>
-<%- include ../partials/bottom.ejs %>
+
+<%- include ../partials/footer.ejs %>

@@ -1,19 +1,18 @@
-<%- include ../partials/top.ejs %>
-<%- include ../partials/navbar.ejs %>
+<%- include ../partials/header.ejs %>
+<%- include ../partials/main_nav.ejs %>
 <div class="d-flex p-5 m-5 border">
     <div class="w-25">
         <p class="fs-5">Prompt:</p>
         <p class="my-4">
-            The graph gives information about the age of the population of Iceland between 1990 and 2020.
-
-            Summarise the information by selecting and reporting the main features, and make comparisons where relevant.
+            <%= body %>
         </p>
         <!-- if image is empty -->
-        <% if(1 != 1) { %>
+        <% if(image.length > 0) { %>
         <img src="https://www.english-exam.org/images/graphs/IELTS_Writing_Task_1_BarChart-189.png" alt="" width="100%">
         <% } %>
     </div>
-    <div class="flex-grow-1 ms-5">
+    <form id="essay-form" class="flex-grow-1 ms-5" method="POST" action="test-yourself-single/submit">
+        <input type="hidden" name="promptId" value="<%= promptId %>">
         <div class="d-flex">
             <div class="ms-auto border px-3 py-2 mb-2 me-3">
                 <span class="d-block">Timer</span>
@@ -23,42 +22,56 @@
                 <span class="d-block">Word Count</span>
                 <span id="word-counter">0</span>
             </div>
+            <input type="hidden" name="wordCount" id="word-count-input">
+            <input type="hidden" name="part" value="<%= part %>">
+            <input type="hidden" name="type" value="<%= type %>">
         </div>
         <div class="mb-3">
-            <textarea class="form-control w-100" id="writing" rows="3" oninput="countWord()"></textarea>
+            <textarea class="form-control w-100" name="taskWriting" id="writing" rows="3" oninput="countWord()"></textarea>
         </div>
         <button type="submit" class="btn btn-primary d-block ms-auto">Submit</button>
-    </div>
+    </form>
 </div>
 
 <script>
     let timer = document.getElementById('timer');
     let wordCounter = document.getElementById('word-counter');
+    let essayForm = document.getElementById('essay-form');
+    let deadline = new Date();
+    deadline.setMinutes(deadline.getMinutes() + <%= time %>);
 
     // Set the date we're counting down to
-    var countDownDate = new Date().getTime();
+    let countDownDate = new Date().getTime();
 
     // Update the count down every 1 second
-    var x = setInterval(function () {
-
+    let x = setInterval(function () {
         // Get today's date and time
-        var now = new Date().getTime();
+        let now = new Date().getTime(); 
 
         // Find the distance between now and the count down date
-        var distance = now - countDownDate;
+        let elipse = deadline - now;
 
         // Time calculations for hours, minutes and seconds
-        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        let hours = Math.floor((elipse % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        let minutes = Math.floor((elipse % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((elipse % (1000 * 60)) / 1000);
 
         timer.innerText = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    
+        if(elipse < 1000) {
+            console.log('time over!!');
+            essayForm.submit()
+        }
+        console.log(elipse);
     }, 1000);
 
     function countWord() {
         let writing = document.getElementById('writing').value;
         let wordCounter = document.getElementById('word-counter');
-        wordCounter.innerText = writing.length && writing.split(/\s+\b/).length || 0;
+        let wordCounterInput = document.getElementById('word-count-input');
+        let wordCount = writing.length && writing.split(/\s+\b/).length || 0;
+        wordCounter.innerText = wordCount;
+        wordCounterInput.value = wordCount;
     }
 </script>
-<%- include ../partials/bottom.ejs %>
+<%- include ../partials/footer.ejs %>
