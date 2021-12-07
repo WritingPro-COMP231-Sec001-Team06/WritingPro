@@ -11,43 +11,45 @@
             <a href="" class="d-block text-decoration-none">My Account</a>
             <a href="" class="d-block text-decoration-none">Logout</a>
         </div>
-        <div class="py-4 px-5 rounded-pill flex-grow-1">
+        <div class="py-4 px-5 rounded-pill flex-grow-1 position-relative w-75">
             <button class="py-4 px-5 rounded-pill border-0">Submit Essay</button>
             <hr>
             <h5 class="fw-light">View Pending Feedback</h5>
             <div class="row">
                 <% for(let i = 0; i < essays.length; i++) { %> 
-                    <div class="col-lg-4 col-md-2 col-sm-1 p-3">
+                    <div class="col-xl-4 col-lg-6 pe-lg-3 pt-3">
                         <div class="bg-light p-4">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="fw-bold">#<%= essays[i].id %></span>
-                                <span class="small text-secondary">
-                                    <%= essays[i].date %>
-                                </span>
-                            </div>
+                            <p class="fw-bold small mb-0">#<%= essays[i]._id %></p>
+                            <p class="small text-secondary mb-4">
+                                <%= essays[i].dateCreated.toString().substr(0, 15) %>
+                            </p>
                             <% if(essays[i].status === "Complete" ) { %>
                                 <i class="fas fa-check-circle fa-3x text-success my-4 d-block text-center"></i>
                             <% } else { %>
                                 <i class="fas fa-clock fa-3x text-warning my-4 d-block text-center"></i>
                             <% } %>
                             <p class="mb-0 fw-bold">
-                                <%= essays[i].type %>
+                                <%= essays[i].IELTSType %>
                             </p>
                             <div class="small text-truncate">
                                 <span>Prompt 1:</span>
                                 <span>
-                                    <%= essays[i].promptTitle[0] %>
+                                    <%= promptTitles[i] %>
+                                    <!-- TODO: add prompt title -->
+                                    <!-- essays[i].promptTitle[0] -->
                                 </span>
                             </div>
                             <!-- Display the second prompt only if it exists -->
-                            <% if(essays[i].promptTitle.length > 1) { %>
+                            <!--
+                            if(essays[i].promptTitle.length > 1) {
                                 <div class="small text-truncate">
                                     <span>Prompt 2:</span>
                                     <span>
-                                        <%= essays[i].promptTitle[1] %>
+                                        essays[i].promptTitle[1]
                                     </span>
                                 </div>
-                            <% } %>
+                            }
+                            -->
                         </div>
                     </div>
                 <% } %> 
