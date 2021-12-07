@@ -51,7 +51,7 @@ module.exports.processLoginPage = (req, res, next) => {
           {
               return next(err);
           }
-          return res.redirect('/admin');
+          return res.redirect('/');
       });
   })(req, res, next);
 
@@ -136,6 +136,56 @@ module.exports.performLogout = (req, res, next) => {
   res.redirect('/login');
 
 }
+
+module.exports.displayAdminLoginPage = (req, res, next) => {
+    // check if the user is already logged in
+    if(!req.user)
+    {
+         res.render('auth/adminLogin',
+         {
+             title: "Login",
+             messages: req.flash('loginMessage'),
+             username: req.user ? req.user.username: ''
+  
+         })
+    }else
+    {
+        return res.redirect('/');
+    }
+  }
+  
+  module.exports.processAdminLoginPage = (req, res, next) => {
+    passport.authenticate('local',
+    (err, user, info) => {
+        // server error?
+        if(err)
+        {
+            return next(err);
+        }
+        // is there a visitor login error?
+        if(!user)
+        {
+            req.flash('loginMessage', 'Authentication Error');
+            return res.redirect('/adminLogin');
+        }
+        if(user.username =='admin@admin.com'){
+        req.login(user, (err) => {
+            //server error?
+            if(err)
+            {
+                return next(err);
+            }
+            
+            return res.redirect('/admin');
+            
+        });}
+        else{
+            req.flash('loginMessage', 'Not a valid Admin ID');
+            return res.redirect('/adminLogin');
+        }
+    })(req, res, next);
+  
+  }
 
 
 /*module.exports.exampleCreatePage = (req, res, next) => {

@@ -43,6 +43,7 @@ mongoDB.on('reconnected', ()=>{
 });
 
 let indexRouter = require("../routes/index");
+let studentRouter = require("../routes/student");
 let adminRouter = require("../routes/admin");
 
 let app = express();
@@ -84,6 +85,7 @@ passport.serializeUser(Visitor.serializeUser());
 passport.deserializeUser(Visitor.deserializeUser());
 
 app.use("/", indexRouter);
+app.use("/student", studentRouter);
 app.use("/", adminRouter);
 
 // catch 404 and forward to error handler

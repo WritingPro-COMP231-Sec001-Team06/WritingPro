@@ -1,0 +1,77 @@
+<%- include ../partials/header.ejs %>
+<%- include ../partials/main_nav.ejs %>
+<div class="d-flex p-5 m-5 border">
+    <div class="w-25">
+        <p class="fs-5">Prompt:</p>
+        <p class="my-4">
+            <%= body %>
+        </p>
+        <!-- if image is empty -->
+        <% if(image.length > 0) { %>
+        <img src="https://www.english-exam.org/images/graphs/IELTS_Writing_Task_1_BarChart-189.png" alt="" width="100%">
+        <% } %>
+    </div>
+    <form id="essay-form" class="flex-grow-1 ms-5" method="POST" action="test-yourself-single/submit">
+        <input type="hidden" name="promptId" value="<%= promptId %>">
+        <div class="d-flex">
+            <div class="ms-auto border px-3 py-2 mb-2 me-3">
+                <span class="d-block">Timer</span>
+                <span id="timer"></span>
+            </div>
+            <div class="border px-3 py-2 mb-2 text-center">
+                <span class="d-block">Word Count</span>
+                <span id="word-counter">0</span>
+            </div>
+            <input type="hidden" name="wordCount" id="word-count-input">
+            <input type="hidden" name="part" value="<%= part %>">
+            <input type="hidden" name="type" value="<%= type %>">
+        </div>
+        <div class="mb-3">
+            <textarea class="form-control w-100" name="taskWriting" id="writing" rows="3" oninput="countWord()"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary d-block ms-auto">Submit</button>
+    </form>
+</div>
+
+<script>
+    let timer = document.getElementById('timer');
+    let wordCounter = document.getElementById('word-counter');
+    let essayForm = document.getElementById('essay-form');
+    let deadline = new Date();
+    deadline.setMinutes(deadline.getMinutes() + <%= time %>);
+
+    // Set the date we're counting down to
+    let countDownDate = new Date().getTime();
+
+    // Update the count down every 1 second
+    let x = setInterval(function () {
+        // Get today's date and time
+        let now = new Date().getTime(); 
+
+        // Find the distance between now and the count down date
+        let elipse = deadline - now;
+
+        // Time calculations for hours, minutes and seconds
+        let hours = Math.floor((elipse % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        let minutes = Math.floor((elipse % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((elipse % (1000 * 60)) / 1000);
+
+        timer.innerText = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    
+        if(elipse < 1000) {
+            console.log('time over!!');
+            essayForm.submit()
+        }
+        console.log(elipse);
+    }, 1000);
+
+    function countWord() {
+        let writing = document.getElementById('writing').value;
+        let wordCounter = document.getElementById('word-counter');
+        let wordCounterInput = document.getElementById('word-count-input');
+        let wordCount = writing.length && writing.split(/\s+\b/).length || 0;
+        wordCounter.innerText = wordCount;
+        wordCounterInput.value = wordCount;
+    }
+</script>
+<%- include ../partials/footer.ejs %>
