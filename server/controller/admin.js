@@ -52,10 +52,21 @@ module.exports.displayHomePage = (req, res, next) => {
   };
 
   module.exports.displayPromptsPage = (req, res, next) => {
-    if(!req.user)
-    {
+    if(!req.user){
         return res.redirect("/login");
     }
+    let filterStatus = {
+      value: "none",
+      display: "Status"
+    };
+    let filterTask = {
+      value: "none",
+      display: "Task"
+    };
+    let filterType = {
+      value: "none",
+      display: "Exam Type"
+    };
     Prompt.find({}, (err, prompts) => {
       if(err){
         console.log(err);
@@ -82,7 +93,10 @@ module.exports.displayHomePage = (req, res, next) => {
       res.render('admin/prompts', {
         title: "Prompts",
         prompts: mappedPrompts,
-        username: req.user ? req.user.username: ''
+        username: req.user ? req.user.username: '',
+        filterStatus: filterStatus,
+        filterTask: filterTask,
+        filterType: filterType
       });
     });
   };
@@ -302,8 +316,35 @@ module.exports.displayHomePage = (req, res, next) => {
     {
         return res.redirect("/login");
     }
+    let filterStatus = {
+      value: "none",
+      display: "Status"
+    };
+    let filterTask = {
+      value: "none",
+      display: "Task"
+    };
+    let filterType = {
+      value: "none",
+      display: "Exam Type"
+    };
     let filter = {};
-    if(!/^\s*$/.test(req.body.filterStatus)){
+    if(req.body.filterStatus !== 'none'){
+      filter.isActive = req.body.filterStatus === 'active' ? true : false;
+      filterStatus.value = req.body.filterStatus;
+      filterStatus.display = req.body.filterStatus === 'active' ? 'Active' : 'Inactive';
+    }
+    if(req.body.filterTask !== 'none'){
+      filter.isTask1 = req.body.filterTask === 'task1' ? true : false;
+      filterTask.value = req.body.filterTask;
+      filterTask.display = req.body.filterTask === 'task1' ? 'Task 1' : 'Task 2';
+    }
+    if(req.body.filterType !== 'none'){
+      filter.isAcademic = req.body.filterType === 'academic' ? true : false;
+      filterType.value = req.body.filterType;
+      filterType.display = req.body.filterType === 'academic' ? 'Academic' : 'General';
+    }
+    /*if(!/^\s*$/.test(req.body.filterStatus)){
       filter.isActive = req.body.filterStatus === 'true' ? true : false;
     }
     if(!/^\s*$/.test(req.body.filterTask)){
@@ -311,7 +352,7 @@ module.exports.displayHomePage = (req, res, next) => {
     }
     if(!/^\s*$/.test(req.body.filterType)){
       filter.isAcademic = req.body.filterType === 'true' ? true : false;
-    }
+    }*/
     Prompt.find(filter, (err, prompts) => {
       if(err){
         console.log(err);
@@ -339,7 +380,10 @@ module.exports.displayHomePage = (req, res, next) => {
       res.render('admin/prompts', {
         title: "Prompts",
         prompts: mappedPrompts,
-        username: req.user ? req.user.username: ''
+        username: req.user ? req.user.username: '',
+        filterStatus: filterStatus,
+        filterTask: filterTask,
+        filterType: filterType
       });
     });
   };
