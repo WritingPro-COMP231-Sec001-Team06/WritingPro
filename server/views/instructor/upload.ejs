@@ -3,8 +3,42 @@
 <%- include ../partials/main_nav.ejs %>
 
 <main class="grid-main">
-  <h4><%= title %></h4>
-  
+    <div class="container">
+        <form method="post" enctype="multipart/form-data">
+            <div class="row justify-content-center">
+                <div class="col-6">
+                    <fieldset class="form-group">
+                        <label for="filename"> File: </label>
+                        <input type="file" class="form-control" id="instructorFile" name="filename" accept="application/pdf" onchange="loadPdf(event)" required>
+                    </fieldset>
+                </div>
+            </div>
+            <br>
+            <iframe id="viewPdf" class="pdf-preview"></iframe>
+            <div class="row justify-content-center">
+                <div class="col-6">
+                    <fieldset class="form-group">
+                        <label for="title"> Title: </label>
+                        <input type="text" class="form-control" name="title" placeholder="Enter Title." required>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-6">
+                    <fieldset class="form-group">
+                        <label for="description"> Description: </label>
+                        <textarea name="description" placeholder="Enter short description." rows="7" class="w-100" required></textarea>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-2">
+                   <input type="submit" class="btn btn-primary" value="Upload">
+                   <a href="/instructor/documents" class="btn btn-danger">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
 </main>
 
 <%- include ../partials/bottom_nav.ejs %>

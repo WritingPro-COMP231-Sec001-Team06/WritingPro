@@ -231,6 +231,7 @@ module.exports.displayHomePage = (req, res, next) => {
         res.end(err);
       }
       if(id){
+        s3.deleteObject({Bucket: bucketName, Key: id.imageUrl});
         console.log("Deletion Successful...");
       }
     });

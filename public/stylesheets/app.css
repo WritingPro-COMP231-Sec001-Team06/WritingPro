@@ -94,3 +94,12 @@ textarea{
 .fw-sb{
     font-weight:600;
 }
+.pdf-preview{
+    width: 100%;
+    height: 30vh;
+    background-color: darkgray;
+}
+.pending{
+    color: rgb(184, 181, 49);
+    font-weight: 700;
+}

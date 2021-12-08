@@ -18,9 +18,13 @@ module.exports.Instructor = (req, res, next) => {
         if(req.user.role !== "instructor"){
             return res.redirect("/" + req.user.role);
         }
-        else if(req.user.role === "instructor" && !req.user.isApproved){
-            return res.redirect("/instructor/upload");
-        }
         return next();
     }
+};
+
+module.exports.InstructorIsApproved = (req, res, next) => {
+    if(req.user.isApproved){
+        return next();
+    }
+    return res.redirect("/instructor/documents");
 };
