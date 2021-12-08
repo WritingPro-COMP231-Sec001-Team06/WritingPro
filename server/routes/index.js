@@ -16,12 +16,13 @@ router.get('/register', indexController.displayRegisterPage);
 router.post('/register', indexController.processRegisterPage);
 // Perform logout 
 router.get('/logout', indexController.performLogout);
-
 // get route for displaying Admin Login page 
 router.get('/adminLogin', indexController.displayAdminLoginPage);
 // post route for processing Admin Login page 
 router.post('/adminLogin', indexController.processAdminLoginPage);
-
-//router.post("/", indexController.exampleCreatePage);
+// get Instructor Registration Page
+router.get("/register/instructor", indexController.displayInstructorRegistrationPage);
+// post Instructor Registration
+router.post("/register/instructor", indexController.processInstructorRegistration);
 
 module.exports = router;

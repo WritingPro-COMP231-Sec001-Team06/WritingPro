@@ -16,45 +16,26 @@ const s3 = new AWS.S3({
 });
 
 module.exports.displayHomePage = (req, res, next) => {
-    if(!req.user)
-    {
-        return res.redirect("/login");
-    }
     res.render("admin/home", { title: "Admin Home Page", 
     username: req.user ? req.user.username: ''  });
   };
 
   module.exports.displayApprovedPage = (req, res, next) => {
-    if(!req.user)
-    {
-        return res.redirect("/login");
-    }
     res.render("admin/approved", { title: "Approved Page", 
     username: req.user ? req.user.username: ''  });
   };
 
   module.exports.displayPendingPage = (req, res, next) => {
-    if(!req.user)
-    {
-        return res.redirect("/login");
-    }
     res.render("admin/pending", { title: "Pending Page", 
     username: req.user ? req.user.username: ''  });
   };
 
   module.exports.displayRejectedPage = (req, res, next) => {
-    if(!req.user)
-    {
-        return res.redirect("/login");
-    }
     res.render("admin/rejected", { title: "Rejected Page", 
     username: req.user ? req.user.username: ''  });
   };
 
   module.exports.displayPromptsPage = (req, res, next) => {
-    if(!req.user){
-        return res.redirect("/login");
-    }
     let filterStatus = {
       value: "none",
       display: "Status"
@@ -106,9 +87,6 @@ module.exports.displayHomePage = (req, res, next) => {
     let isTask1 = true;
     let isAcademic = false;
     let title = '';
-    if(!req.user){
-      return res.redirect("/login");
-    }
     if(settings === '1a'){
       isTask1 = true;
       isAcademic = true;
@@ -139,10 +117,6 @@ module.exports.displayHomePage = (req, res, next) => {
     let regexp = /\r\n/;
     let prompt = req.body.prompt;
     let key = '';
-    if(!req.user)
-    {
-        return res.redirect("/login");
-    }
     if(isTask1 && isAcademic)
     {
       let image = req.files.imageInput;
@@ -192,10 +166,6 @@ module.exports.displayHomePage = (req, res, next) => {
   };
 
   module.exports.displayViewPage = (req, res, next) => {
-    if(!req.user)
-    {
-        return res.redirect("/login");
-    }
     Prompt.findById(req.params.id, (err, prompt) => {
       if(err){
         console.log(err);
@@ -225,10 +195,6 @@ module.exports.displayHomePage = (req, res, next) => {
   };
 
   module.exports.displayEditPage = (req, res, next) => {
-    if(!req.user)
-    {
-        return res.redirect("/login");
-    }
     Prompt.findById(req.params.id, (err, prompt) => {
       if(err){
         console.log(err);
@@ -259,10 +225,6 @@ module.exports.displayHomePage = (req, res, next) => {
   };
 
   module.exports.processDeletePrompt = (req, res, next) => {
-    if(!req.user)
-    {
-        return res.redirect("/login");
-    }
     Prompt.findByIdAndDelete(req.params.id, (err, id) => {
       if(err){
         console.log(error);
@@ -276,10 +238,6 @@ module.exports.displayHomePage = (req, res, next) => {
   };
 
   module.exports.processSavePrompt = (req, res, next) => {
-    if(!req.user)
-    {
-        return res.redirect("/login");
-    }
     Prompt.findByIdAndUpdate(req.body.id, {imageDescription: req.body.imageDescription, promptMessage: req.body.prompt}, (err, sucess) => {
       if(err){
         console.log(err);
@@ -296,10 +254,6 @@ module.exports.displayHomePage = (req, res, next) => {
       return res.redirect("/admin/prompts");
     }
     let status = data[1] === "true" ? true : false;
-    if(!req.user)
-    {
-        return res.redirect("/login");
-    }
     Prompt.findByIdAndUpdate(data[0], {isActive: !status}, (err, success) => {
       if(err){
         console.log(err);
@@ -312,10 +266,6 @@ module.exports.displayHomePage = (req, res, next) => {
   };
 
   module.exports.processPromptFilter = (req, res, next) => {
-    if(!req.user)
-    {
-        return res.redirect("/login");
-    }
     let filterStatus = {
       value: "none",
       display: "Status"

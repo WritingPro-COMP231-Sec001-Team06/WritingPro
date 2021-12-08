@@ -25,6 +25,11 @@ let VisitorSchema = Schema({
     {
         type: Date,
         default: Date.now()
+    },
+    role: String,
+    isApproved: {
+        type: Boolean,
+        default: false
     }
 },
 {

@@ -10,8 +10,11 @@ let Visitor = visitorModel.Visitor; // alias
 //let userProfile = require('../models/examplemodel');
 
 module.exports.displayHomePage = (req, res, next) => {
-  res.render("index", { title: "Home Page", 
-  username: req.user ? req.user.username: '' });
+    if(req.user){
+        return res.redirect("/" + req.user.role);
+    }
+    res.render("index", { title: "Home Page", 
+    username: req.user ? req.user.username: '' });
 };
 
 module.exports.displayLoginPage = (req, res, next) => {
@@ -92,7 +95,9 @@ module.exports.processRegisterPage = (req, res, next) => {
      firstLanguage: req.body.firstLanguage,
      startingIELTSLevel: req.body.startingIELTSLevel,
      targetScore: req.body.targetScore,
-     targetTestCountry : req.body.targetTestCountry
+     targetTestCountry : req.body.targetTestCountry,
+     role: "student",
+     isApproved: true
      //displayName: req.body.displayName
  });
 
@@ -187,7 +192,77 @@ module.exports.displayAdminLoginPage = (req, res, next) => {
   
   }
 
+module.exports.displayInstructorRegistrationPage = (req, res, next) => {
+    if(!req.user)
+    {
+        res.render('auth/instructorRegistration',
+        {
+            title: 'Register',
+            messages: req.flash('registerMessage'),
+            username: req.user ? req.user.username : ''
+        });
+    }
+    else
+    {
+        return res.redirect('/');
+    }
+};
 
+module.exports.processInstructorRegistration = (req, res, next) => {
+    // instantiate a visitor object
+   
+    let newVisitor = new Visitor({
+       username: req.body.username,
+        //password cover
+        //password: req.body,password,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        address: req.body.address,
+        city: req.body.city,
+        country: req.body.country,
+        firstLanguage: "",
+        startingIELTSLevel: 0,
+        targetScore: 0,
+        targetTestCountry : "",
+        role: "instructor",
+        isApproved: false
+        //displayName: req.body.displayName
+    });
+   
+    console.log(newVisitor);
+    
+    Visitor.register(newVisitor, req.body.password, (err) => { 
+        if(err)
+        {
+            // seems no problem in data
+            console.log('Error: Inserting New Visitor');
+            console.log(err);
+            if(err.name == "UserExistError")
+            {
+                req.flash(
+                    'registerMessage',
+                    'Registration Error: Visitor Already Exists!'
+                );
+                console.log('Error: Visitor Already Exists!')
+            }
+            return res.redirect('/register');
+            
+        }
+        else
+        {
+            //if no error exists, then registration is successful
+   
+            // redirect the user and authenticate them
+   
+            return passport.authenticate('local')(req, res, () => {
+            res.redirect('/')
+            console.log('success register');
+            });
+            
+        }
+    });
+   
+};
 /*module.exports.exampleCreatePage = (req, res, next) => {
   console.log('Here');
   userProfile.create({
