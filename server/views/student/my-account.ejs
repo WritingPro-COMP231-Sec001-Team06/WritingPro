@@ -1,0 +1,50 @@
+<%- include ../partials/header.ejs %>
+<%- include ../partials/main_nav.ejs %>
+
+<div class="container shadow d-flex flex-row my-5">
+    <!-- sidenav -->
+    <div class="bg-light py-5 px-4">
+        <a href="/student/dashboard" class="d-block text-decoration-none">Home</a>
+            <a href="" class="d-block text-decoration-none">Submit Ready-Made Essay</a>
+            <a href="/student/test-yourself" class="d-block text-decoration-none">Test-Yourself</a>
+            <a href="" class="d-block text-decoration-none">View Pending Feedback</a>
+            <a href="" class="d-block text-decoration-none">Submission History</a>
+            <a href="/student/my-account" class="d-block text-decoration-none">My Account</a>
+            <a href="/logout" class="d-block text-decoration-none">Logout</a>
+    </div>
+    <form action="" method="post" class="py-4 px-5 rounded-pill flex-grow-1 position-relative">
+        <div class="mb-3 w-50">
+            <label for="exampleFormControlInput1" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="exampleFormControlInput1" value="<%= username %>" disabled>
+        </div>
+        <div class="mb-3 w-50">
+            <label for="feedbackLanguage" class="form-label">In what language do you want to receive your
+                feedback in?
+            </label>
+            <select class="form-select mb-3 w-100" name="feedbackLanguage" id="feedbackLanguage">
+                <option>Language</option>
+                <option value="English" <%if(user.firstLanguage === 'English') {%> selected <%}%> >English</option>
+                <option value="Chinese" <%if(user.firstLanguage === 'Chinese') {%> selected <%}%>>Chinese</option>
+                <option value="Spanish" <%if(user.firstLanguage === 'Spanish') {%> selected <%}%>>Spanish</option>
+                <option value="Hindi" <%if(user.firstLanguage === 'Hindi') {%> selected <%}%>>Hindi</option>
+                <option value="Arabic" <%if(user.firstLanguage === 'Arabic') {%> selected <%}%>>Arabic</option>
+                <option value="Japanese" <%if(user.firstLanguage === 'Japanese') {%> selected <%}%>>Japanese</option>
+                <option value="Korean" <%if(user.firstLanguage === 'Korean') {%> selected <%}%>>Korean</option>
+            </select> </div>
+        <div class="mb-3 w-50">
+            <label for="ieltsCountry" class="form-label">Where are you taking your IELTS?</label>
+            <select class="form-select mb-3 w-100" name="ieltsCountry" id="ieltsCountry">
+                <option>Country</option>
+                <option value="Canada" <%if(user.targetTestCountry === 'Canada') {%> selected <%}%>>Canada</option>
+                <option value="USA" <%if(user.targetTestCountry === 'USA') {%> selected <%}%>>USA</option>
+                <option value="New Zealand" <%if(user.targetTestCountry === 'New Zealand') {%> selected <%}%>>New Zealand</option>
+                <option value="UK" <%if(user.targetTestCountry === 'UK') {%> selected <%}%>>UK</option>
+                <option value="New Zealand" <%if(user.targetTestCountry === 'New Zealand') {%> selected <%}%>>Ireland</option>
+                <option value="Austrailia" <%if(user.targetTestCountry === 'Austrailia') {%> selected <%}%>>Australia</option>
+            </select>
+        </div>
+        <button class="btn btn-primary mt-4" type="submit">Save</button>
+    </form>
+</div>
+
+<%- include ../partials/footer.ejs %>

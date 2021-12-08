@@ -4,6 +4,9 @@ let mongoose = require("mongoose");
 let passport = require("passport");
 let StudentPrompts = require("../models/prompt-student");
 let Essays = require("../models/essay");
+let visitorModel=require('../models/visitor');
+let Visitor = visitorModel.Visitor;
+
 
 // let tempUser = new {
 //   studentID: "123214",
@@ -39,12 +42,12 @@ module.exports.displayDashboardPage = (req, res, next) => {
 
     essays.forEach((essay) => {
       StudentPrompts.find({ _id: essay.promptId }, (err, prompt) => {
-        if(prompt.length > 0) {
+        if (prompt.length > 0) {
           promptTitles.push(prompt[0].promptMessage);
         }
         if (promptTitles.length === essays.length) {
           res.render("student/dashboard", {
-            username: req.user ? req.user.username: '',
+            username: req.user ? req.user.username : "",
             title: "Dashboard",
             essays: essays,
             promptTitles: promptTitles,
@@ -115,7 +118,7 @@ module.exports.displayTestYourselfCustomization = (req, res, next) => {
   }
   console.log("displaying testyourself page!");
   res.render("student/test-yourself-customization", {
-    username: req.user ? req.user.username: '',
+    username: req.user ? req.user.username : "",
     title: "test-yourself",
     message: "",
   });
@@ -145,7 +148,7 @@ module.exports.processTestYourselfCustomization = (req, res, next) => {
           console.log(prompts[promptIndex1]._id.toString());
 
           res.render("student/test-yourself-single", {
-            username: req.user ? req.user.username: '',
+            username: req.user ? req.user.username : "",
             title: "test-yourself",
             time: req.body.part == "1" ? 20 : 40,
             part: req.body.part,
@@ -180,7 +183,7 @@ module.exports.processTestYourselfCustomization = (req, res, next) => {
           let promptIndex2 = Math.floor(Math.random() * task2s.length);
           console.log("rendering testyourself");
           res.render("student/test-yourself-multiple", {
-            username: req.user ? req.user.username: '',
+            username: req.user ? req.user.username : "",
             title: "test-yourself",
             time: 60,
             part: req.body.part,
@@ -294,19 +297,32 @@ module.exports.submitSingleEssay = (req, res, next) => {
 };
 
 module.exports.displayTestYourselfSingle = (req, res, next) => {
+  if (!req.user) {
+    return res.redirect("/login");
+  }
+
   res.render("student/test-yourself-single", {
-    username: req.user ? req.user.username: '',
+    username: req.user ? req.user.username : "",
     title: "test-yourself",
   });
 };
 
 module.exports.displayTestYourselfMultiple = (req, res, next) => {
+  if (!req.user) {
+    return res.redirect("/login");
+  }
+
   res.render("student/test-yourself-multiple", {
-    username: req.user ? req.user.username: '',
+    username: req.user ? req.user.username : "",
     title: "test-yourself",
   });
 };
+
 module.exports.displayFeedbacks = (req, res, next) => {
+  if (!req.user) {
+    return res.redirect("/login");
+  }
+
   let randomDate = new Date(2021, 11, 10);
 
   let month = [
@@ -377,6 +393,7 @@ module.exports.displayFeedbacks = (req, res, next) => {
     essays: essays,
   });
 };
+
 module.exports.displayFeedback = (req, res, next) => {
   let randomDate = new Date(2021, 11, 10);
 
@@ -430,4 +447,33 @@ module.exports.displayFeedback = (req, res, next) => {
     username: req.user ? req.user.username : "",
     essay: essay,
   });
+};
+
+module.exports.displayMyAccount = (req, res, next) => {
+  if (!req.user) {
+    return res.redirect("/login");
+  }
+
+  res.render("student/my-account", {
+    title: "My Account",
+    username: req.user ? req.user.username : "",
+    user: req.user,
+  });
+};
+
+module.exports.submitAccountInfo = (req, res, next) => {
+  if (!req.user) {
+    return res.redirect("/login");
+  }
+
+  console.log(req.body);
+
+  Visitor.findByIdAndUpdate(req.user._id, {firstLanguage: req.body.feedbackLanguage, targetTestCountry: req.body.ieltsCountry}, (err, visitor) => {
+    if(err){
+      console.log(err);
+      res.end(err);
+    }
+    res.redirect('/student/my-account');
+  });
+
 };
