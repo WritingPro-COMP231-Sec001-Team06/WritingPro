@@ -44,6 +44,7 @@ module.exports.displayDashboardPage = (req, res, next) => {
         }
         if (promptTitles.length === essays.length) {
           res.render("student/dashboard", {
+            username: req.user ? req.user.username: '',
             title: "Dashboard",
             essays: essays,
             promptTitles: promptTitles,
@@ -114,6 +115,7 @@ module.exports.displayTestYourselfCustomization = (req, res, next) => {
   }
   console.log("displaying testyourself page!");
   res.render("student/test-yourself-customization", {
+    username: req.user ? req.user.username: '',
     title: "test-yourself",
     message: "",
   });
@@ -143,6 +145,7 @@ module.exports.processTestYourselfCustomization = (req, res, next) => {
           console.log(prompts[promptIndex1]._id.toString());
 
           res.render("student/test-yourself-single", {
+            username: req.user ? req.user.username: '',
             title: "test-yourself",
             time: req.body.part == "1" ? 20 : 40,
             part: req.body.part,
@@ -177,6 +180,7 @@ module.exports.processTestYourselfCustomization = (req, res, next) => {
           let promptIndex2 = Math.floor(Math.random() * task2s.length);
           console.log("rendering testyourself");
           res.render("student/test-yourself-multiple", {
+            username: req.user ? req.user.username: '',
             title: "test-yourself",
             time: 60,
             part: req.body.part,
@@ -291,12 +295,14 @@ module.exports.submitSingleEssay = (req, res, next) => {
 
 module.exports.displayTestYourselfSingle = (req, res, next) => {
   res.render("student/test-yourself-single", {
+    username: req.user ? req.user.username: '',
     title: "test-yourself",
   });
 };
 
 module.exports.displayTestYourselfMultiple = (req, res, next) => {
   res.render("student/test-yourself-multiple", {
+    username: req.user ? req.user.username: '',
     title: "test-yourself",
   });
 };
