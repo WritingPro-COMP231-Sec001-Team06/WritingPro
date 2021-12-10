@@ -6,11 +6,9 @@ let authorization = require("../controller/check-auth");
 router.get("/admin", authorization.Admin, adminController.displayHomePage);
 router.get("/admin/home", authorization.Admin, adminController.displayHomePage);
 
-router.get("/admin/approved", authorization.Admin, adminController.displayApprovedPage);
+router.get("/admin/applicants", authorization.Admin, adminController.displayApplicantsPage);
 
-router.get("/admin/pending", authorization.Admin, adminController.displayPendingPage);
-
-router.get("/admin/rejected", authorization.Admin, adminController.displayRejectedPage);
+router.get("/admin/applications", authorization.Admin, adminController.displayApplicationsPage);
 
 router.get("/admin/prompts", authorization.Admin, adminController.displayPromptsPage);
 
@@ -29,5 +27,11 @@ router.get("/admin/prompts/delete/:id", authorization.Admin, adminController.pro
 router.post("/admin/prompts/edit/:id", authorization.Admin, adminController.processSavePrompt);
 
 router.get("/admin/prompts/changestatus/:id", authorization.Admin, adminController.processPromptStatus);
+
+router.get("/admin/document/view/:id", authorization.Admin, adminController.displayViewDocumentPage);
+
+router.get("/admin/document/approve/:id", authorization.Admin, adminController.processApproveDocument);
+
+router.get("/admin/document/reject/:id", authorization.Admin, adminController.processRejectDocument);
 
 module.exports = router;

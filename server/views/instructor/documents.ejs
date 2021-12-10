@@ -29,7 +29,11 @@
                 </div>
                     <div class="col ms-2 d-flex flex-column justify-content-center align-items-center">
                     <a href="/instructor/documents/view/<%= metadatas[i]._id %>" target="_blank" class="btn btn-outline-primary lh-1 w-75 my-1">View</a>
-                    <a href="/instructor/documents/delete/<%= metadatas[i]._id %>" class="btn btn-outline-danger lh-1 w-75 my-1">Delete</a>
+                    <% if (metadatas[i].status === 'approved') { %>
+                        <a href="/instructor/documents/delete/<%= metadatas[i]._id %>" class="btn btn-outline-danger lh-1 w-75 my-1" hidden>Delete</a>
+                    <% }  else { %>
+                        <a href="/instructor/documents/delete/<%= metadatas[i]._id %>" class="btn btn-outline-danger lh-1 w-75 my-1">Delete</a>
+                    <% } %>
                 </div>
             </div>
             </div>

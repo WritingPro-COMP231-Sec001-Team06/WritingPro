@@ -1,0 +1,50 @@
+<%- include ../partials/header.ejs %>
+<div class="logged-layout">
+<%- include ../partials/main_nav.ejs %>
+
+<%- include ./sidenav_partial.ejs %>
+
+<main class="grid-main">
+    <div class="position-sticky">
+        <div class="row">
+          <div class="col-4">
+            <div class="d-flex align-items-center">
+            <h5 class="my-auto">Create: </h5>
+            <a class="btn btn-outline-primary lh-1 mx-1" href="/admin/prompts/create/1a">Academic Task 1</a><hr>
+            <a class="btn btn-outline-primary lh-1 mx-1" href="/admin/prompts/create/1g">Genereal Task 1</a><hr>
+            <a class="btn btn-outline-primary lh-1 mx-1" href="/admin/prompts/create/2t">Task 2</a><hr>
+            </div>
+          </div>
+          <div class="col">
+            <form method="POST">
+              <div class="d-flex align-items-center">
+                <h5 class="my-auto">Filter: </h5>
+                <select class="form-select lh-1 mx-1"  name="filterStatus" aria-label="Filter Status">
+                  <!--<option value="<%# filterStatus.value %>" hidden><%# filterStatus.display %></option>-->
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                  <option value="none">None</option>
+                </select>
+                <select class="form-select lh-1 mx-1" name="filterTask" aria-label="Filter Task">
+                  <!--<option value="<%# filterTask.value %>" hidden><%# filterTask.display %></option>-->
+                  <option value="task1">Task 1</option>
+                  <option value="task2">Task 2</option>
+                  <option value="none">None</option>
+                </select>
+                <select class="form-select lh-1 mx-1" name="filterType" aria-label="Filter Type">
+                  <!--<option value="<%# filterType.value %>" hidden><%# filterType.display %></option>-->
+                  <option value="academic">Academic</option>
+                  <option value="general">General</option>
+                  <option value="none">None</option>
+                </select>
+                <button type="submit" class="btn btn-outline-info lh-1 mx-1">Filter</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+</main>
+
+<%- include ../partials/bottom_nav.ejs %>
+</div>
+<%- include ../partials/footer.ejs %>

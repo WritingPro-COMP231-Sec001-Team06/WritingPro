@@ -13,7 +13,8 @@ module.exports.displayHomePage = (req, res, next) => {
     if(req.user){
         return res.redirect("/" + req.user.role);
     }
-    res.render("index", { title: "Home Page", 
+    res.render("index", { title: "Home Page",
+    role: "", 
     username: req.user ? req.user.username: '' });
 };
 
@@ -24,6 +25,7 @@ module.exports.displayLoginPage = (req, res, next) => {
        res.render('auth/login',
        {
            title: "Login",
+           role: "", 
            messages: req.flash('loginMessage'),
            username: req.user ? req.user.username: ''
 
@@ -68,6 +70,7 @@ if(!req.user)
     res.render('auth/register',
     {
         title: 'Register',
+        role: "", 
         messages: req.flash('registerMessage'),
         username: req.user ? req.user.username : ''
     });
@@ -149,6 +152,7 @@ module.exports.displayAdminLoginPage = (req, res, next) => {
          res.render('auth/adminLogin',
          {
              title: "Login",
+             role: "", 
              messages: req.flash('loginMessage'),
              username: req.user ? req.user.username: ''
   
@@ -198,6 +202,7 @@ module.exports.displayInstructorRegistrationPage = (req, res, next) => {
         res.render('auth/instructorRegistration',
         {
             title: 'Register',
+            role: "", 
             messages: req.flash('registerMessage'),
             username: req.user ? req.user.username : ''
         });

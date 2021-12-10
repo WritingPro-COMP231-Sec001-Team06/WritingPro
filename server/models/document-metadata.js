@@ -9,7 +9,8 @@ let documentMetadata = mongoose.Schema({
     dateUploaded: {
         type: Date,
         default: Date.now()
-    }
+    },
+    fullName: String
 },
 {
     collection: "DocumentMetadata"

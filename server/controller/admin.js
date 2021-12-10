@@ -3,6 +3,7 @@ let fs = require("fs");
 let AWS = require('aws-sdk');
 let tmp = require('tmp');
 let Prompt = require('../models/prompt');
+let DocumentMetadata = require('../models/document-metadata');
 
 const accessKey = 'AKIA2VR32QISDVBT3LHG';
 const secretKey = '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';
@@ -16,23 +17,34 @@ const s3 = new AWS.S3({
 });
 
 module.exports.displayHomePage = (req, res, next) => {
-    res.render("admin/home", { title: "Admin Home Page", 
-    username: req.user ? req.user.username: ''  });
+    res.render("admin/home", { 
+      title: "Home", 
+      role: "Admin",
+      username: req.user ? req.user.username: ''  });
   };
 
-  module.exports.displayApprovedPage = (req, res, next) => {
-    res.render("admin/approved", { title: "Approved Page", 
-    username: req.user ? req.user.username: ''  });
+  module.exports.displayApplicationsPage = (req, res, next) => {
+    DocumentMetadata.find({}, (err, metadatas) => {
+      if(err){
+        console.log(err);
+        res.end(err);
+      }
+      console.log(metadatas);
+      res.render("admin/applications", { 
+        title: "Applications", 
+        role: "Admin",
+        username: req.user ? req.user.username: '',
+        metadatas: metadatas
+      });
+    });
+    
   };
 
-  module.exports.displayPendingPage = (req, res, next) => {
-    res.render("admin/pending", { title: "Pending Page", 
-    username: req.user ? req.user.username: ''  });
-  };
-
-  module.exports.displayRejectedPage = (req, res, next) => {
-    res.render("admin/rejected", { title: "Rejected Page", 
-    username: req.user ? req.user.username: ''  });
+  module.exports.displayApplicantsPage = (req, res, next) => {
+    res.render("admin/applicants", { 
+      title: "Applicants", 
+      role: "Admin",
+      username: req.user ? req.user.username: ''  });
   };
 
   module.exports.displayPromptsPage = (req, res, next) => {
@@ -73,6 +85,7 @@ module.exports.displayHomePage = (req, res, next) => {
       });
       res.render('admin/prompts', {
         title: "Prompts",
+        role: "Admin",
         prompts: mappedPrompts,
         username: req.user ? req.user.username: '',
         filterStatus: filterStatus,
@@ -105,9 +118,11 @@ module.exports.displayHomePage = (req, res, next) => {
     else{
       return res.redirect("/admin/prompts");
     }
-    res.render("admin/create", { title: title, 
-    isTask1: isTask1,
-    isAcademic: isAcademic});
+    res.render("admin/create", { 
+      title: 'Prompts', 
+      role: "Admin",
+      isTask1: isTask1,
+      isAcademic: isAcademic});
   };
 
   module.exports.processCreatePromptPage = (req, res, next) => {
@@ -178,7 +193,8 @@ module.exports.displayHomePage = (req, res, next) => {
       if(prompt.isTask1 && prompt.isAcademic){
         imageUrl = s3.getSignedUrl('getObject', {Bucket: bucketName, Key: prompt.imageUrl});
       }
-      res.render('admin/view', {title: 'View Prompt',
+      res.render('admin/view', {title: 'Prompts',
+      role: "Admin",
       username: req.user ? req.user.username: '', prompt: {
         isTask1: prompt.isTask1,
         isAcademic: prompt.isAcademic,
@@ -207,7 +223,8 @@ module.exports.displayHomePage = (req, res, next) => {
       if(prompt.isTask1 && prompt.isAcademic){
         imageUrl = s3.getSignedUrl('getObject', {Bucket: bucketName, Key: prompt.imageUrl});
       }
-      res.render('admin/edit', {title: 'View Prompt',
+      res.render('admin/edit', {title: 'Prompts',
+      role: "Admin",
       username: req.user ? req.user.username: '', prompt: {
         id: prompt._id,
         isTask1: prompt.isTask1,
@@ -330,11 +347,67 @@ module.exports.displayHomePage = (req, res, next) => {
       });
       res.render('admin/prompts', {
         title: "Prompts",
+        role: "Admin",
         prompts: mappedPrompts,
         username: req.user ? req.user.username: '',
         filterStatus: filterStatus,
         filterTask: filterTask,
         filterType: filterType
       });
+    });
+  };
+
+  module.exports.displayViewDocumentPage = (req, res, next) => {
+    DocumentMetadata.findById(req.params.id, (err, metadata) => {
+      if(err){
+        console.log(err);
+        res.end(err);
+      }
+      if(!metadata){
+        res.redirect('/admin/prompts');
+      }
+      let mappedmetadata = {
+        id: metadata._id,
+        title: metadata.title,
+        description: metadata.description,
+        fullName: metadata.fullName,
+        pdfUrl: s3.getSignedUrl('getObject', {Bucket: bucketName, Key: metadata.filename})
+      };
+      if(metadata.status === "approved"){
+        return res.render("instructor/view", {
+          title: "Applicants", 
+          role: "Admin",
+          username: req.user ? req.user.username: '',
+          pdfUrl: mappedmetadata.pdfUrl
+        });
+      }
+      res.render("admin/view_document", { 
+        title: "Applicants", 
+        role: "Admin",
+        username: req.user ? req.user.username: '',
+        metadata: mappedmetadata
+      });
+    });
+  };
+
+  module.exports.processApproveDocument = (req, res, next) => {
+    DocumentMetadata.findByIdAndUpdate(req.params.id, {status: "approved"}, (err, metadata) => {
+      if(err){
+        console.log(err);
+        res.end(err);
+      }
+      
+      res.redirect("/admin/applications");
+    });
+  };
+
+  module.exports.processRejectDocument = (req, res, next) => {
+    DocumentMetadata.findByIdAndUpdate(req.params.id, {status: "rejected"}, (err, metadata) => {
+      if(err){
+        console.log(err);
+        res.end(err);
+      }
+      
+      res.redirect("/admin/applications");
     });
   };

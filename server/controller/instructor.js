@@ -23,6 +23,7 @@ module.exports.displayDocumentsPage = (req, res, next) => {
         }
         res.render("instructor/documents", { 
             title: "Documents",
+            role: "Instructor",
             username: req.user ? req.user.username : '',
             metadatas: metadatas
         });
@@ -32,6 +33,7 @@ module.exports.displayDocumentsPage = (req, res, next) => {
 module.exports.displayInstructorHomePage = (req, res, next) => {
     res.render("instructor/home", { 
         title: "Home",
+        role: "Instructor",
         username: req.user ? req.user.username : ''
     });
 }
@@ -41,7 +43,8 @@ module.exports.displayUploadDocumentPage = (req, res, next) => {
         res.redirect("/instructor");
     }
     res.render("instructor/upload", { 
-        title: "upload",
+        title: "Upload",
+        role: "Instructor",
         username: req.user ? req.user.username : ''
     });
 }
@@ -81,7 +84,8 @@ module.exports.processUploadDocumentPage = (req, res, next) => {
         description: req.body.description,
         filename: key,
         status: "pending",
-        dateUploaded: Date.now()
+        dateUploaded: Date.now(),
+        fullName: req.user.firstName + " " + req.user.lastName
     }, (error, data) => {
         if(error){
             console.log(error);
@@ -102,7 +106,8 @@ module.exports.displayViewDocumentPage = (req, res, next) => {
         }
         let pdfUrl = s3.getSignedUrl('getObject', {Bucket: bucketName, Key: documentMetadata.filename});
         res.render("instructor/view", {
-            title: "upload",
+            title: "View Document",
+            role: "Instructor",
             username: req.user ? req.user.username : '',
             pdfUrl: pdfUrl
         });

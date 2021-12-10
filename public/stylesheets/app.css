@@ -23,6 +23,16 @@
     padding: 5px 5px 0 5px;
 }
 
+.pdfview-layout{
+    display: grid;
+    grid-template-areas: 
+    "header"
+    "content";
+    grid-template-rows: 10fr 90fr;
+    height: 100vh;
+    padding: 5px 5px 0 5px;
+}
+
 .grid-header{
     grid-area: header;
 }
@@ -33,7 +43,7 @@
 
 .grid-main{
     grid-area: content;
-    margin: 0px 5px;
+    margin: 0px;
 }
 
 .grid-footer{
@@ -55,6 +65,8 @@ textarea{
 .position-sticky{
     width: 100%;
     padding-bottom: 5px;
+    padding-left: 20px;
+    margin-bottom: 20px;
     position: -webkit-sticky;
     position: sticky;
     top: 0px;
@@ -79,6 +91,9 @@ textarea{
     border-radius: 0.25rem;
     width: 60%;
     padding: 5px 10px;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 .active{
     color: green;
@@ -102,4 +117,9 @@ textarea{
 .pending{
     color: rgb(184, 181, 49);
     font-weight: 700;
+}
+.fill-content{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }

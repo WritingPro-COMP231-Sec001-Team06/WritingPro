@@ -1,0 +1,67 @@
+<nav class="grid-nav">
+    <div class="h-100 w-100 p-3 bg-light">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"> 
+      <span class="fs-4">Admin Dashboard</span>
+    </a>
+    <hr>
+      <ul class="nav nav-pills flex-column mb-auto">
+      <% if (title === "Home") { %>
+          <li class="nav-item">
+            <a href="/admin" class="nav-link link-dark active" aria-current="page">
+              Home
+            </a>
+          </li>
+      <% } %>
+      <% if (title !== "Home") { %>
+        <li class="nav-item">
+          <a href="/admin" class="nav-link link-dark" aria-current="page">
+            Home
+          </a>
+        </li>
+      <% } %>
+      <% if (title === "Applicants") { %>
+        <li>
+          <a href="/admin/applicants" class="nav-link link-dark active">
+            Applicants
+          </a>
+        </li>
+      <% } %>
+      <% if (title !== "Applicants") { %>
+        <li>
+          <a href="/admin/applicants" class="nav-link link-dark">
+            Applicants
+          </a>
+        </li>
+      <% } %>
+      <% if (title === "Applications") { %>
+        <li>
+          <a href="/admin/applications" class="nav-link link-dark active">
+            Applications
+          </a>
+        </li>
+      <% } %>
+      <% if (title !== "Applications") { %>
+        <li>
+          <a href="/admin/applications" class="nav-link link-dark">
+            Applications
+          </a>
+        </li>
+      <% } %>
+      <% if (title === "Prompts") { %>
+        <li>
+          <a href="/admin/prompts" class="nav-link link-dark active">
+            Prompts
+          </a>
+        </li>
+      <% } %>
+      <% if (title !== "Prompts") { %>
+        <li>
+          <a href="/admin/prompts" class="nav-link link-dark">
+            Prompts
+          </a>
+        </li>
+      <% } %>
+    </ul>
+    <hr>
+  </div>
+</nav>
