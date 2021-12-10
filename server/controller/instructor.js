@@ -64,7 +64,7 @@ module.exports.processUploadDocumentPage = (req, res, next) => {
             Body: fileContent,
             ACL: 'public-read',
             ContentType: 'application/pdf',
-            ContentDisposition: 'attachment'
+            ContentDisposition: 'inline;'
         };
         s3.upload(params, function(err, data) {
             if(err){
