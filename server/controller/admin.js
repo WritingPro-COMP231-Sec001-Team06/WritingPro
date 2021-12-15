@@ -4,6 +4,7 @@ let AWS = require('aws-sdk');
 let tmp = require('tmp');
 let Prompt = require('../models/prompt');
 let DocumentMetadata = require('../models/document-metadata');
+const Visitor = require("../models/visitor");
 
 const accessKey = 'AKIA2VR32QISDVBT3LHG';
 const secretKey = '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';
@@ -396,7 +397,25 @@ module.exports.displayHomePage = (req, res, next) => {
         console.log(err);
         res.end(err);
       }
-      
+      if(metadata){
+        DocumentMetadata.find({instructorId: metadata.instructorId, status: "approved"}, (err, metadatas) => {
+          if(err){
+            console.log(err);
+            res.end(err);
+          }
+          if(metadatas.length === 3){
+            Visitor.Visitor.findByIdAndUpdate(metadata.instructorId, {isApproved: true}, (err, visitor) => {
+              if(err){
+                console.log(err);
+                res.end(err);
+              }
+              if(visitor){
+                console.log("Visitor has been approved!")
+              }
+            });
+          }
+        });
+      }
       res.redirect("/admin/applications");
     });
   };

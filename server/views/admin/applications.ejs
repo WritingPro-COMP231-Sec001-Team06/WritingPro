@@ -38,28 +38,30 @@
         </div>
     </div>
     <% metadatas.forEach(element => { %>
-        <div class="prompt-card">
-            <div class="row">
-                <div class="col-10 vertical-line">
-                    <p class="m-0"><span class="fw-sb">Name:</span> <em><%= element.fullName %></em></p>
-                    <p class="m-0"><span class="fw-sb">Title:</span> <em><%= element.title %></em></p>
-                    <p class="m-0"><span class="fw-sb">Description:</span> <em><%= element.description %></em></p>
-                    <p class="m-0"><span class="fw-sb">Date Uploaded:</span> <em><%= element.dateUploaded %></em></p>
-                    <% if(element.status === "pending") { %>
-                        <p class="m-0"><span class="fw-sb">Status:</span> <span class="pending">Pending</span></p>
-                    <% } else if(element.status === "approved") { %>
-                        <p class="m-0"><span class="fw-sb">Status:</span> <span class="active">Approved</span></p>
-                    <% } %>
-                </div>
-                <div class="col ms-2 d-flex flex-column justify-content-center align-items-center">
-                    <% if (element.status === "approved") { %>
-                        <a href="/admin/document/view/<%= element._id %>" target="_blank"  class="btn btn-primary lh-1 w-75 my-1">View</a>
-                    <% } else { %>
-                        <a href="/admin/document/view/<%= element._id %>" class="btn btn-primary lh-1 w-75 my-1">View</a>
-                    <% } %>
+        <% if (element.status !== "rejected") { %>
+            <div class="prompt-card">
+                <div class="row">
+                    <div class="col-10 vertical-line">
+                        <p class="m-0"><span class="fw-sb">Name:</span> <em><%= element.fullName %></em></p>
+                        <p class="m-0"><span class="fw-sb">Title:</span> <em><%= element.title %></em></p>
+                        <p class="m-0"><span class="fw-sb">Description:</span> <em><%= element.description %></em></p>
+                        <p class="m-0"><span class="fw-sb">Date Uploaded:</span> <em><%= element.dateUploaded %></em></p>
+                        <% if(element.status === "pending") { %>
+                            <p class="m-0"><span class="fw-sb">Status:</span> <span class="pending">Pending</span></p>
+                        <% } else if(element.status === "approved") { %>
+                            <p class="m-0"><span class="fw-sb">Status:</span> <span class="active">Approved</span></p>
+                        <% } %>
+                    </div>
+                    <div class="col ms-2 d-flex flex-column justify-content-center align-items-center">
+                        <% if (element.status === "approved") { %>
+                            <a href="/admin/document/view/<%= element._id %>" target="_blank"  class="btn btn-primary lh-1 w-75 my-1">View</a>
+                        <% } else { %>
+                            <a href="/admin/document/view/<%= element._id %>" class="btn btn-primary lh-1 w-75 my-1">View</a>
+                        <% } %>
+                    </div>
                 </div>
             </div>
-        </div>
+        <% } %>
     <% }) %>
 
 </main>

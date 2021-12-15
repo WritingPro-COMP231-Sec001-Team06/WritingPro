@@ -79,7 +79,7 @@ module.exports.processUploadDocumentPage = (req, res, next) => {
         pathdir.removeCallback();
     });
     DocumentMetadata.create({
-        username: req.user.username,
+        instructorId: req.user._id,
         title: req.body.title,
         description: req.body.description,
         filename: key,
@@ -121,7 +121,7 @@ module.exports.processDeleteDocument = (req, res, next) => {
             console.log(err);
             res.end(err);
         }
-        if(documentMetadata.username === req.user.username){
+        if(documentMetadata.instructorId === req.user._id.toString()){
            
             DocumentMetadata.findByIdAndDelete(req.params._id, (err, id) => {
                 if(err){

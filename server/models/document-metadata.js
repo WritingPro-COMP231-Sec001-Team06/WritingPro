@@ -1,7 +1,7 @@
 let mongoose = require('mongoose');
 
 let documentMetadata = mongoose.Schema({
-    username: String,
+    instructorId: String,
     title: String,
     description: String,
     filename: String,
