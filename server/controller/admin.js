@@ -35,17 +35,38 @@ module.exports.displayHomePage = (req, res, next) => {
         title: "Applications", 
         role: "Admin",
         username: req.user ? req.user.username: '',
-        metadatas: metadatas
+        metadatas: metadatas,
+        filter: "all"
       });
     });
-    
   };
 
   module.exports.displayApplicantsPage = (req, res, next) => {
-    res.render("admin/applicants", { 
-      title: "Applicants", 
-      role: "Admin",
-      username: req.user ? req.user.username: ''  });
+    
+    let mappedVisitors = [];
+    Visitor.Visitor.find({role: "instructor"},  (err, visitors) => {
+      if(err){
+        console.log(err);
+        res.end(err);
+      }
+      if(visitors.length){
+        mappedVisitors = visitors.map(visitor => {
+          return {
+            id: visitor._id,
+            fullName: visitor.firstName + " " + visitor.lastName,
+            signUpDate: visitor.created,
+            isApproved: visitor.isApproved
+          };
+        });
+      }
+      //console.log(mappedVisitors);
+      res.render("admin/applicants", { 
+        title: "Applicants", 
+        role: "Admin",
+        username: req.user ? req.user.username: '',
+        visitors: mappedVisitors,
+        filter: 'all'  });
+    });
   };
 
   module.exports.displayPromptsPage = (req, res, next) => {
@@ -428,5 +449,76 @@ module.exports.displayHomePage = (req, res, next) => {
       }
       
       res.redirect("/admin/applications");
+    });
+  };
+
+  module.exports.processFilterApplicationsPage = (req, res, next) => {
+    filter = {}
+    console.log(req.body.filterApplications);
+    if(req.body.filterApplications !== 'all'){
+      filter.status = req.body.filterApplications;
+    }
+    DocumentMetadata.find(filter, (err, metadatas) => {
+      if(err){
+        console.log(err);
+        res.end(err);
+      }
+      console.log(metadatas);
+      res.render("admin/applications", { 
+        title: "Applications", 
+        role: "Admin",
+        username: req.user ? req.user.username: '',
+        metadatas: metadatas,
+        filter: req.body.filterApplications
+      });
+    });
+  };
+
+  module.exports.displayViewDocumentsPage = (req,res,next) => {
+    DocumentMetadata.find({instructorId: req.params.id}, (err, metadatas) => {
+      if(err){
+        console.log(err);
+        res.end(err);
+      }
+      console.log(metadatas);
+      res.render("admin/applications-applicants", { 
+        title: "Applicants", 
+        role: "Admin",
+        username: req.user ? req.user.username: '',
+        metadatas: metadatas
+      });
+    });
+  }
+
+  module.exports.processFilterApplicantsPage = (req, res, next) => {
+    filter = {role: "instructor"}
+    console.log(req.body.filterApplicants);
+    if(req.body.filterApplicants !== 'all'){
+      req.body.filterApplicants === "approved" ? filter.isApproved = true : filter.isApproved = false;
+    }
+    let mappedVisitors = [];
+    Visitor.Visitor.find(filter,  (err, visitors) => {
+      if(err){
+        console.log(err);
+        res.end(err);
+      }
+      if(visitors.length){
+        mappedVisitors = visitors.map(visitor => {
+          return {
+            id: visitor._id,
+            fullName: visitor.firstName + " " + visitor.lastName,
+            signUpDate: visitor.created,
+            isApproved: visitor.isApproved
+          };
+        });
+      }
+      //console.log(mappedVisitors);
+      res.render("admin/applicants", { 
+        title: "Applicants", 
+        role: "Admin",
+        username: req.user ? req.user.username: '',
+        visitors: mappedVisitors,
+        filter: req.body.filterApplicants  
+      });
     });
   };

@@ -8,7 +8,11 @@ router.get("/admin/home", authorization.Admin, adminController.displayHomePage);
 
 router.get("/admin/applicants", authorization.Admin, adminController.displayApplicantsPage);
 
+router.post("/admin/applicants", authorization.Admin, adminController.processFilterApplicantsPage);
+
 router.get("/admin/applications", authorization.Admin, adminController.displayApplicationsPage);
+
+router.post("/admin/applications", authorization.Admin, adminController.processFilterApplicationsPage);
 
 router.get("/admin/prompts", authorization.Admin, adminController.displayPromptsPage);
 
@@ -33,5 +37,7 @@ router.get("/admin/document/view/:id", authorization.Admin, adminController.disp
 router.get("/admin/document/approve/:id", authorization.Admin, adminController.processApproveDocument);
 
 router.get("/admin/document/reject/:id", authorization.Admin, adminController.processRejectDocument);
+
+router.get("/admin/applicants/documents/:id", authorization.Admin, adminController.displayViewDocumentsPage);
 
 module.exports = router;

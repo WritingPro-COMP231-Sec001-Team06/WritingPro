@@ -16,7 +16,7 @@ const s3 = new AWS.S3({
 });
 
 module.exports.displayDocumentsPage = (req, res, next) => {
-    DocumentMetadata.find({username: req.user.username}, (err, metadatas) => {
+    DocumentMetadata.find({instructorId: req.user._id}, (err, metadatas) => {
         if(err){
             console.log(err);
             res.end(err);

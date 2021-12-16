@@ -12,23 +12,20 @@
                     <form method="POST">
                         <div class="d-flex align-items-center">
                             <h5 class="my-auto">Filter: </h5>
-                            <select class="form-select lh-1 mx-1"  name="filterStatus" aria-label="Filter Status">
+                            <select class="form-select lh-1 mx-1"  name="filterApplications" aria-label="Filter Applications">
                             <!--<option value="<%# filterStatus.value %>" hidden><%# filterStatus.display %></option>-->
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                            <option value="none">None</option>
-                            </select>
-                            <select class="form-select lh-1 mx-1" name="filterTask" aria-label="Filter Task">
-                            <!--<option value="<%# filterTask.value %>" hidden><%# filterTask.display %></option>-->
-                            <option value="task1">Task 1</option>
-                            <option value="task2">Task 2</option>
-                            <option value="none">None</option>
-                            </select>
-                            <select class="form-select lh-1 mx-1" name="filterType" aria-label="Filter Type">
-                            <!--<option value="<%# filterType.value %>" hidden><%# filterType.display %></option>-->
-                            <option value="academic">Academic</option>
-                            <option value="general">General</option>
-                            <option value="none">None</option>
+                            <option hidden value="<%= filter %>">
+                                <% if(filter === "pending") { %>
+                                    Pending
+                                <% } else if(filter === "approved") { %>
+                                    Approved
+                                <% } else  {%> 
+                                    All
+                                <% }%>       
+                            </option>
+                            <option value="approved">Approved</option>
+                            <option value="pending">Pending</option>
+                            <option value="all">All</option>
                             </select>
                             <button type="submit" class="btn btn-outline-info lh-1 mx-1">Filter</button>
                         </div>

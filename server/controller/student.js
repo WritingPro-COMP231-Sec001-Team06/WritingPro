@@ -31,13 +31,19 @@ module.exports.displayDashboardPage = (req, res, next) => {
   if (!req.user) {
     return res.redirect("/login");
   }
-
-  Essays.find({ studentID: req.user._id }, (err, essays) => {
+  return res.render("student/dashboard", {
+            username: req.user ? req.user.username : "",
+            title: "Dashboard",
+            role: "Student"
+            //essays: essays,
+            //promptTitles: promptTitles,
+          });
+  /*Essays.find({ studentID: req.user._id }, (err, essays) => {
     if (err) {
       console.log(err);
       res.end(err);
     }
-    console.log(essays[0].promptId);
+    console.log("Reached displayDashboardPage",essays[0].promptId);
     let promptTitles = [];
 
     essays.forEach((essay) => {
@@ -55,8 +61,7 @@ module.exports.displayDashboardPage = (req, res, next) => {
         }
       });
     });
-  });
-
+  });*/
   // let randomDate = new Date(2021, 11, 10);
   // let month = [
   //   "Jan",
@@ -119,6 +124,7 @@ module.exports.displayTestYourselfCustomization = (req, res, next) => {
   console.log("displaying testyourself page!");
   res.render("student/test-yourself-customization", {
     username: req.user ? req.user.username : "",
+    role: "Student",
     title: "test-yourself",
     message: "",
   });
@@ -185,6 +191,7 @@ module.exports.processTestYourselfCustomization = (req, res, next) => {
           res.render("student/test-yourself-multiple", {
             username: req.user ? req.user.username : "",
             title: "test-yourself",
+            role:  "Student",
             time: 60,
             part: req.body.part,
             type: req.body.type,
@@ -309,11 +316,13 @@ module.exports.displayTestYourselfSingle = (req, res, next) => {
 
 module.exports.displayTestYourselfMultiple = (req, res, next) => {
   if (!req.user) {
+    console.log("Reached displayTestYourselfMultiple req.user not recognized.");
     return res.redirect("/login");
   }
-
+  console.log("Reached displayTestYourselfMultiple");
   res.render("student/test-yourself-multiple", {
     username: req.user ? req.user.username : "",
+    role: "Student",
     title: "test-yourself",
   });
 };
