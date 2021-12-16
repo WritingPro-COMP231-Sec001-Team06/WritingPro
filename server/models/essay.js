@@ -9,7 +9,7 @@ let Essay = mongoose.Schema({
     status: String,
     wordCount: Number,
     IELTSType: String,
-    prompt: String,
+    promptId: String,
     essayBody: String,
     essayPart: String
 },

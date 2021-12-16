@@ -22,5 +22,9 @@ router.get("/test-yourself/test/multiple", studentController.displayTestYourself
 router.get("/feedbacks", studentController.displayFeedbacks);
 // GET - /student/feedbacks/id
 router.get("/feedbacks/detail", studentController.displayFeedback);
+// GET - /student/my-account
+router.get("/my-account", studentController.displayMyAccount);
+// POST - /student/my-account
+router.post("/my-account", studentController.submitAccountInfo);
 
 module.exports = router;
