@@ -147,82 +147,15 @@ module.exports.processDeleteDocument = (req, res, next) => {
 }
 
 module.exports.displayFeedbackPage =  (req, res, next) => {
-    MockTest.find({}, (err, mockTests) => {
-        if(err){
-            console.log(err);
-            res.end(err);
-        }
-        if(mockTests.length){
-            let filtered = mockTests.filter(mockTest => {
-                if(mockTest.task1){
-                    if(!mockTest.task1Feedback){
-                        return true;
-                    }
-                }else if(mockTest.task2){
-                    if(!mockTest.task2Feedback){
-                        return true;
-                    }
-                }else{
-                    return false;
-                }
-            });
-            //console.log(filtered);
-            let mapped = filtered.map(mockTest => {
-                let output = {};
-                if(mockTest.task1){
-                    Essays.findById(mockTest.task1, (err, essay) => {
-                        if(err){
-                            console.log(err);
-                            res.end(err);
-                        }
-                        if(essay){
-                            Prompt.findById(essay.promptId, (err, result) => {
-                                if(err){
-                                    console.log(err);
-                                    res.end(err);
-                                }
-                                if(result){
-                                    output.prompt1 = result.promptMessage.split('&#13;&#10;').join('\r\n');
-                                    console.log(output.prompt1);
-                                }
-                            });
-                        }
-                    });
-                }
-                if(mockTest.task2){
-                    Essays.findById(mockTest.task2, (err, essay) => {
-                        if(err){
-                            console.log(err);
-                            res.end(err);
-                        }
-                        if(essay){
-                            Prompt.findById(essay.promptId, (err, result) => {
-                                if(err){
-                                    console.log(err);
-                                    res.end(err);
-                                }
-                                if(result){
-                                    output.prompt2 = result.promptMessage.split('&#13;&#10;').join('\r\n');
-                                    console.log(output.prompt2);
-                                }
-                            });
-                        }
-                    });
-                }
-                output.type = mockTest.type;
-                output.dateCreated = mockTest.dateCreated;
-                output.studentId = mockTest.studentID;
-                return output;
-            });
-            console.log(mapped);
+
+    Essays.find({status: 'pending'}, (err, essays) => {
+        if(essays){
             res.render("instructor/feedback", {
                 title: "Feedback",
                 role: "Instructor",
                 username: req.user ? req.user.username : '',
-                mockTest: mapped
+                essays: essays
             });
         }
     });
-
-    
 }

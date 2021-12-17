@@ -12,6 +12,11 @@ let Essay = mongoose.Schema({
     promptId: String,
     essayBody: String,
     essayPart: String,
+    feedback: {
+        type: String,
+        default: ""  
+    }
+
 },
 {
     collection: "Essays"
