@@ -123,3 +123,6 @@ textarea{
     flex-direction: column;
     flex-grow: 1;
 }
+.onhover:hover{
+    cursor: pointer;
+}

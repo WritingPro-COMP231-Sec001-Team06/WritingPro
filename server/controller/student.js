@@ -2,11 +2,24 @@ let express = require("express");
 let router = express.Router();
 let mongoose = require("mongoose");
 let passport = require("passport");
+let AWS = require('aws-sdk');
 let StudentPrompts = require("../models/prompt-student");
 let Essays = require("../models/essay");
 let visitorModel=require('../models/visitor');
 let Visitor = visitorModel.Visitor;
+let Prompt = require('../models/prompt');
+let MockTest = require('../models/mocktest');
 
+const accessKey = 'AKIA2VR32QISDVBT3LHG';
+const secretKey = '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';
+
+const bucketName = 'comp231writingpro';
+
+const s3 = new AWS.S3({
+  accessKeyId: accessKey,
+  secretAccessKey: secretKey,
+  region: 'us-east-1'
+});
 
 // let tempUser = new {
 //   studentID: "123214",
@@ -136,14 +149,19 @@ module.exports.processTestYourselfCustomization = (req, res, next) => {
   if (!req.user) {
     return res.redirect("/login");
   }
-
+  console.log(req.body.part.length);
   if (req.body.part) {
     if (req.body.part.length == 1) {
-      StudentPrompts.find(
-        {
-          isTask1: req.body.part == "1",
-          isAcademic: req.body.type === "academic",
-        },
+      let filter = {};
+      if(req.body.part == "1"){
+        filter.isTask1 = true;
+        filter.isAcademic = req.body.type === "academic";
+      }
+      else{
+        filter.isTask1 = false
+        filter.isAcademic = true;
+      }
+      Prompt.find(filter,
         (err, prompts) => {
           if (err) {
             console.log(err);
@@ -159,51 +177,59 @@ module.exports.processTestYourselfCustomization = (req, res, next) => {
             time: req.body.part == "1" ? 20 : 40,
             part: req.body.part,
             type: req.body.type,
-            body: prompts[promptIndex1].promptMessage,
-            image: prompts[promptIndex1].imageUrl,
+            body: prompts[promptIndex1].promptMessage.split('&#13;&#10;').join('\r\n'),
+            image: req.body.part == "1" && req.body.type === "academic" ? s3.getSignedUrl('getObject', {Bucket: bucketName, Key: prompts[promptIndex1].imageUrl}) : "",
             promptId: prompts[promptIndex1]._id.toString(),
             // if accessibility mode is on, value is 'on' otherwise null
             accessibilityMode: req.body.accessibility,
+            role: "Student"
           });
         }
       );
     } else {
-      StudentPrompts.find(
-        { isAcademic: req.body.type === "academic" },
+      Prompt.find({},
         (err, prompts) => {
           if (err) {
             console.log(err);
             res.end(err);
           }
-          // TODO: display all the submitted essays
-          let task1s = [];
-          let task2s = [];
-          prompts.forEach((p) => {
-            if (p.task === 1) {
-              task1s.push(p);
-            } else {
-              task2s.push(p);
-            }
-          });
-          let promptIndex1 = Math.floor(Math.random() * task1s.length);
-          let promptIndex2 = Math.floor(Math.random() * task2s.length);
-          console.log("rendering testyourself");
-          res.render("student/test-yourself-multiple", {
-            username: req.user ? req.user.username : "",
-            title: "test-yourself",
-            role:  "Student",
-            time: 60,
-            part: req.body.part,
-            type: req.body.type,
-            body1: prompts[promptIndex1].promptMessage,
-            body2: prompts[promptIndex2].promptMessage,
-            image: prompts[promptIndex1].imageUrl,
-            prompt1Id: prompts[promptIndex1]._id.toString(),
-            prompt2Id: prompts[promptIndex2]._id.toString(),
-            // if accessibility mode is on, value is 'on' otherwise null
-            accessibilityMode: req.body.accessibility,
-          });
-        }
+          if(prompts){
+            // TODO: display all the submitted essays
+            let task1s = prompts.filter(prompt => {
+              if(req.body.type === "academic"){
+                return prompt.isAcademic && prompt.isTask1;
+              }
+              return !prompt.isAcademic && prompt.isTask1;
+            });
+            let task2s = prompts.filter(prompt => {return prompt.isAcademic && !prompt.isTask1});
+            if(prompts){
+              
+            let promptIndex1 = Math.floor(Math.random() * task1s.length);
+            let promptIndex2 = Math.floor(Math.random() * task2s.length);
+            console.log(task1s.length);
+            console.log(task2s.length);
+            //console.log(promptIndex1);
+            //console.log(promptIndex2);
+            console.log("rendering testyourself");
+            //console.log(s3.getSignedUrl('getObject', {Bucket: bucketName, Key: task1s[promptIndex1].imageUrl}));
+            res.render("student/test-yourself-multiple", {
+              username: req.user ? req.user.username : "",
+              title: "test-yourself",
+              role:  "Student",
+              time: 60,
+              part: req.body.part,
+              type: req.body.type,
+              body1: task1s[promptIndex1].promptMessage.split('&#13;&#10;').join('\r\n'),
+              body2: task2s[promptIndex2].promptMessage.split('&#13;&#10;').join('\r\n'),
+              image: req.body.type === "academic" ? s3.getSignedUrl('getObject', {Bucket: bucketName, Key: task1s[promptIndex1].imageUrl}) : "",
+              prompt1Id: prompts[promptIndex1]._id.toString(),
+              prompt2Id: prompts[promptIndex2]._id.toString(),
+              // if accessibility mode is on, value is 'on' otherwise null
+              accessibilityMode: req.body.accessibility,
+              role: "Student"
+            });
+          }
+        }}
       );
     }
   }
@@ -214,6 +240,10 @@ module.exports.submitEssays = (req, res, next) => {
     return res.redirect("/login");
   }
   console.log(req.body);
+
+  let mockTest = {
+    studentID: req.user._id
+  };
 
   let essay1 = {
     studentID: req.user._id,
@@ -234,18 +264,31 @@ module.exports.submitEssays = (req, res, next) => {
     essayBody: req.body.task2Writing,
     essayPart: 2,
   };
-  Essays.create(essay1, (err, data) => {
+  Essays.create(essay1, (err, data1) => {
     if (err) {
       console.log(err);
       res.end(err);
     }
-  });
-  Essays.create(essay2, (err, data) => {
-    if (err) {
-      console.log(err);
-      res.end(err);
+    if(data1){
+      Essays.create(essay2, (err, data2) => {
+        if (err) {
+          console.log(err);
+          res.end(err);
+        }
+        if(data2){
+          mockTest.task1 = data1._id;
+          mockTest.task2 = data2._id;
+          MockTest.create(mockTest, (err, test) => {
+            if(err){
+              console.log(err);
+              res.end(err);
+            }
+          });
+        }
+      });
     }
   });
+  
   res.redirect("/student/dashboard");
 
   // if (req.body.part.length == 1) {
@@ -311,6 +354,8 @@ module.exports.displayTestYourselfSingle = (req, res, next) => {
   res.render("student/test-yourself-single", {
     username: req.user ? req.user.username : "",
     title: "test-yourself",
+    role: "Student"
+    
   });
 };
 
@@ -324,6 +369,7 @@ module.exports.displayTestYourselfMultiple = (req, res, next) => {
     username: req.user ? req.user.username : "",
     role: "Student",
     title: "test-yourself",
+    role: "Student"
   });
 };
 
@@ -400,6 +446,7 @@ module.exports.displayFeedbacks = (req, res, next) => {
     title: "Pending Feedbacks",
     username: req.user ? req.user.username : "",
     essays: essays,
+    role: "Student"
   });
 };
 
@@ -455,6 +502,7 @@ module.exports.displayFeedback = (req, res, next) => {
     title: "Pending Feedbacks",
     username: req.user ? req.user.username : "",
     essay: essay,
+    role: "Student"
   });
 };
 
@@ -467,6 +515,7 @@ module.exports.displayMyAccount = (req, res, next) => {
     title: "My Account",
     username: req.user ? req.user.username : "",
     user: req.user,
+    role: "Student"
   });
 };
 

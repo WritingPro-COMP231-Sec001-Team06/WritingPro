@@ -1,11 +1,11 @@
 <%- include ../partials/header.ejs %>
 <%- include ../partials/main_nav.ejs %>
 <ul class="nav nav-tabs mx-5 mt-5 border-bottom-0">
-    <li class="nav-item">
-        <a class="nav-link h-100 active" id="task1-item" onclick="switchTask(1)">Task 1</a>
+    <li class="nav-item onhover" onclick="openTab(0)">
+        <a class="nav-link h-100 active" id="task1-item" >Task 1</a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link h-100" id="task2-item" onclick="switchTask(2)">Task 2</a>
+    <li class="nav-item onhover"  onclick="openTab(1)">
+        <a class="nav-link h-100" id="task2-item">Task 2</a>
     </li>
     <li class="nav-item ms-auto border border-bottom-0 px-3 py-2">
         <span>Timer: </span>
@@ -13,15 +13,7 @@
     </li>
 </ul>
 
-
-
-
-<div class="w3-bar w3-black">
-    <button class="w3-bar-item w3-button" onclick="openTab(0)">1</button>
-    <button class="w3-bar-item w3-button" onclick="openTab(1)">2</button>
-</div>
-
-<form action="test-yourself-multiple/submit" method="post">
+<form action="test-yourself-multiple/submit" method="post" class="h-100">
     <div id="1" class="d-flex p-5 mx-5 border task-tab d-block">
         <div class="w-25">
             <p class="fs-5">Prompt1:</p>
@@ -29,7 +21,7 @@
             <p class="my-4">
                 <%= body1 %>
             </p>
-            <img src="https://www.english-exam.org/images/graphs/IELTS_Writing_Task_1_BarChart-189.png" alt=""
+            <img src="<%= image %>" alt=""
                 width="100%">
         </div>
         <div class="flex-grow-1 ms-5">
@@ -41,7 +33,7 @@
                 </div>
             </div>
             <div class="mb-3">
-                <textarea name="task1Writing" class="form-control w-100" id="task1-writing" rows="5"
+                <textarea name="task1Writing" class="form-control w-100" id="task1-writing" rows="15"
                     oninput="countWord()"></textarea>
             </div>
 
@@ -68,7 +60,7 @@
                 </div>
             </div>
             <div class="mb-3">
-                <textarea class="form-control w-100" id="task2-writing" name="task2Writing" rows="5"
+                <textarea class="form-control w-100" id="task2-writing" name="task2Writing" rows="15"
                     oninput="countWord()"></textarea>
             </div>
 
@@ -124,16 +116,27 @@
 
     function openTab(tab) {
         var x = document.getElementsByClassName("task-tab");
+        let task1 = document.getElementById('task1-item');
+        let task2 = document.getElementById('task2-item');
         if (tab == 0) {
+            if(!task1.classList.contains('active')){
+                task1.classList.add('active');
+            }
+            task2.classList.remove('active');
             x[0].classList.add('d-block');
             x[0].classList.remove('d-none');
             x[1].classList.add('d-none');
             x[1].classList.remove('d-block');
         } else {
+            if(!task2.classList.contains('active')){
+                task2.classList.add('active');
+            }
+            task1.classList.remove('active');
             x[0].classList.remove('d-block');
             x[0].classList.add('d-none');
             x[1].classList.remove('d-none');
             x[1].classList.add('d-block');
+            
         }
     }
 </script>

@@ -7,9 +7,7 @@
             <%= body %>
         </p>
         <!-- if image is empty -->
-        <% if(image.length > 0) { %>
-        <img src="https://www.english-exam.org/images/graphs/IELTS_Writing_Task_1_BarChart-189.png" alt="" width="100%">
-        <% } %>
+        <img src="<%= image %>" alt="" width="100%">
     </div>
     <form id="essay-form" class="flex-grow-1 ms-5" method="POST" action="test-yourself-single/submit">
         <input type="hidden" name="promptId" value="<%= promptId %>">

@@ -11,7 +11,19 @@ let Essay = mongoose.Schema({
     IELTSType: String,
     promptId: String,
     essayBody: String,
-    essayPart: String
+    essayPart: String,
+    clarification: {
+        type: String,
+        default: ""  
+    },
+    firstfeedback: {
+        type: String,
+        default: ""  
+    },
+    secondfeedback: {
+        type: String,
+        default: ""  
+    },
 },
 {
     collection: "Essays"
