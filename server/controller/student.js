@@ -278,6 +278,7 @@ module.exports.submitEssays = (req, res, next) => {
         if(data2){
           mockTest.task1 = data1._id;
           mockTest.task2 = data2._id;
+          mockTest.type = req.body.type;
           MockTest.create(mockTest, (err, test) => {
             if(err){
               console.log(err);
@@ -308,7 +309,7 @@ module.exports.submitSingleEssay = (req, res, next) => {
   if (!req.user) {
     return res.redirect("/login");
   }
-
+  let mocktest = {studentID: req.user._id};
   let essay = {
     studentID: req.user._id,
     status: "pending",
@@ -324,6 +325,16 @@ module.exports.submitSingleEssay = (req, res, next) => {
     if (err) {
       console.log(err);
       res.end(err);
+    }
+    if(data){
+      req.body.part == "1" ? mocktest.task1 = data._id : mocktest.task2 = data._id;
+      mocktest.type = req.body.type;
+      MockTest.create(mocktest, (err, test) => {
+        if(err){
+          console.log(err);
+          res.end(err);
+        }
+      });
     }
   });
   res.redirect("/student/dashboard");

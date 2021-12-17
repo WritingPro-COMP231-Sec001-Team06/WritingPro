@@ -6,12 +6,36 @@
     </a>
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
-      <li class="nav-item">
-        <a href="/admin" class="nav-link link-dark active" aria-current="page">
-          <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
-          Home
-        </a>
-      </li>
+      <% if(title === "Home") { %>
+        <li class="nav-item">
+          <a href="/instructor" class="nav-link link-dark active" aria-current="page">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+            Home
+          </a>
+        </li>
+      <% } else {%>
+        <li class="nav-item">
+          <a href="/instructor" class="nav-link link-dark" aria-current="page">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+            Home
+          </a>
+        </li>
+      <% } %>
+      <% if(title === "Feedback") { %>
+        <li class="nav-item">
+          <a href="/instructor/feedback" class="nav-link link-dark active" aria-current="page">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+            Feedback
+          </a>
+        </li>
+      <% } else {%>
+        <li class="nav-item">
+          <a href="/instructor/feedback" class="nav-link link-dark " aria-current="page">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+            Feedback
+          </a>
+        </li>
+      <% } %>
     </ul>
     <hr>
   </div>

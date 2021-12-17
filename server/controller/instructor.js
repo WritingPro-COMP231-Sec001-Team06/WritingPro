@@ -3,6 +3,10 @@ let fs = require("fs");
 let AWS = require('aws-sdk');
 let tmp = require('tmp');
 let DocumentMetadata = require('../models/document-metadata');
+let MockTest = require('../models/mocktest');
+const mocktest = require("../models/mocktest");
+let Essays = require("../models/essay");
+let Prompt = require('../models/prompt');
 
 const accessKey = 'AKIA2VR32QISDVBT3LHG';
 const secretKey = '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';
@@ -140,4 +144,85 @@ module.exports.processDeleteDocument = (req, res, next) => {
         }
     });
     res.redirect('/instructor/documents');
+}
+
+module.exports.displayFeedbackPage =  (req, res, next) => {
+    MockTest.find({}, (err, mockTests) => {
+        if(err){
+            console.log(err);
+            res.end(err);
+        }
+        if(mockTests.length){
+            let filtered = mockTests.filter(mockTest => {
+                if(mockTest.task1){
+                    if(!mockTest.task1Feedback){
+                        return true;
+                    }
+                }else if(mockTest.task2){
+                    if(!mockTest.task2Feedback){
+                        return true;
+                    }
+                }else{
+                    return false;
+                }
+            });
+            //console.log(filtered);
+            let mapped = filtered.map(mockTest => {
+                let output = {};
+                if(mockTest.task1){
+                    Essays.findById(mockTest.task1, (err, essay) => {
+                        if(err){
+                            console.log(err);
+                            res.end(err);
+                        }
+                        if(essay){
+                            Prompt.findById(essay.promptId, (err, result) => {
+                                if(err){
+                                    console.log(err);
+                                    res.end(err);
+                                }
+                                if(result){
+                                    output.prompt1 = result.promptMessage.split('&#13;&#10;').join('\r\n');
+                                    console.log(output.prompt1);
+                                }
+                            });
+                        }
+                    });
+                }
+                if(mockTest.task2){
+                    Essays.findById(mockTest.task2, (err, essay) => {
+                        if(err){
+                            console.log(err);
+                            res.end(err);
+                        }
+                        if(essay){
+                            Prompt.findById(essay.promptId, (err, result) => {
+                                if(err){
+                                    console.log(err);
+                                    res.end(err);
+                                }
+                                if(result){
+                                    output.prompt2 = result.promptMessage.split('&#13;&#10;').join('\r\n');
+                                    console.log(output.prompt2);
+                                }
+                            });
+                        }
+                    });
+                }
+                output.type = mockTest.type;
+                output.dateCreated = mockTest.dateCreated;
+                output.studentId = mockTest.studentID;
+                return output;
+            });
+            console.log(mapped);
+            res.render("instructor/feedback", {
+                title: "Feedback",
+                role: "Instructor",
+                username: req.user ? req.user.username : '',
+                mockTest: mapped
+            });
+        }
+    });
+
+    
 }

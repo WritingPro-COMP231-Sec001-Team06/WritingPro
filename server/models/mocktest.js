@@ -13,6 +13,15 @@ let MockTest = mongoose.Schema({
     task2: {
         type: String,
         default: ""
+    },
+    type: String,
+    task1Feedback: {
+        type: String,
+        default: ""
+    },
+    task2Feedback: {
+        type: String,
+        default: ""
     }
 },
 {

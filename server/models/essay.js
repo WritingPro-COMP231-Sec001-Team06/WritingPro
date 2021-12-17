@@ -12,18 +12,6 @@ let Essay = mongoose.Schema({
     promptId: String,
     essayBody: String,
     essayPart: String,
-    clarification: {
-        type: String,
-        default: ""  
-    },
-    firstfeedback: {
-        type: String,
-        default: ""  
-    },
-    secondfeedback: {
-        type: String,
-        default: ""  
-    },
 },
 {
     collection: "Essays"

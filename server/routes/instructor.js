@@ -16,4 +16,6 @@ router.get("/instructor/documents/view/:_id", authorization.Instructor, instruct
 
 router.get("/instructor/documents/delete/:_id", authorization.Instructor, instructorController.processDeleteDocument);
 
+router.get("/instructor/feedback", authorization.Instructor, authorization.InstructorIsApproved, instructorController.displayFeedbackPage);
+
 module.exports = router;
