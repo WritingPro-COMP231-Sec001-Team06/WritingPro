@@ -16,6 +16,10 @@ router.get("/instructor/documents/view/:_id", authorization.Instructor, instruct
 
 router.get("/instructor/documents/delete/:_id", authorization.Instructor, instructorController.processDeleteDocument);
 
-router.get("/instructor/feedback", authorization.Instructor, authorization.InstructorIsApproved, instructorController.displayFeedbackPage);
+router.get("/instructor/essay", authorization.Instructor, authorization.InstructorIsApproved, instructorController.displayFeedbackPage);
+
+router.get("/instructor/essay/grade/:id", authorization.Instructor, authorization.InstructorIsApproved, instructorController.displayGradeEssayPage);
+
+router.post("/instructor/essay/grade/:id", authorization.Instructor, authorization.InstructorIsApproved, instructorController.processGradeEssay);
 
 module.exports = router;

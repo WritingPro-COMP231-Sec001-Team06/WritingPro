@@ -1,10 +1,9 @@
 let mongoose = require('mongoose');
 
 let Feedback = mongoose.Schema({
-    feedbackID: String,
     submissionID: String,
     instructorID: String,
-    dateCreated: Date,
+    dateCreated: {type: Date, default: Date.now()},
     feedbackBody: String,
     estimatedScore: Number
 },

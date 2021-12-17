@@ -7,6 +7,7 @@ let MockTest = require('../models/mocktest');
 const mocktest = require("../models/mocktest");
 let Essays = require("../models/essay");
 let Prompt = require('../models/prompt');
+let Feedback = require('../models/feedback');
 
 const accessKey = 'AKIA2VR32QISDVBT3LHG';
 const secretKey = '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';
@@ -150,12 +151,54 @@ module.exports.displayFeedbackPage =  (req, res, next) => {
 
     Essays.find({status: 'pending'}, (err, essays) => {
         if(essays){
-            res.render("instructor/feedback", {
-                title: "Feedback",
+            res.render("instructor/essay", {
+                title: "Essays",
                 role: "Instructor",
                 username: req.user ? req.user.username : '',
                 essays: essays
             });
         }
     });
+}
+module.exports.displayGradeEssayPage =  (req, res, next) => {
+    Essays.findById(req.params.id, (err, essay) => {
+        if(err){
+            console.log(err);
+            res.end(err);
+        }
+        if(essay){
+            Prompt.findById(essay.promptId, (err, result) => {
+                if(result){
+                    let presigned = result;
+                    presigned.presigned = essay.IELTSType === "academic" && essay.essayPart === "1" ? s3.getSignedUrl('getObject', {Bucket: bucketName, Key: result.imageUrl}) : "";
+                    res.render("instructor/grade", {
+                        title: "Grade Essay",
+                        role: "Instructor",
+                        username: req.user ? req.user.username : '',
+                        essay: essay,
+                        prompt: presigned
+                    });
+                }
+            });
+        }
+    });
+}
+
+module.exports.processGradeEssay = (req, res, next) => {
+    Feedback.create({
+        instructerID: req.user._id,
+        estimatedScore: req.body.bandScore,
+        feedbackBody: req.body.feedback,
+        submissionID: req.body.essayId
+    }, (err, success) => {
+        if(success){
+            Essays.findByIdAndUpdate(req.body.essayId, {feedback: success._id, status: "finished"},
+                (err, result) => {
+                    if(result){
+                        console.log("Update Successful.");
+                        res.redirect("/instructor/essay");
+                    }
+                });
+        }
+    })
 }
