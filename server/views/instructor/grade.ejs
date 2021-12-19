@@ -1,0 +1,39 @@
+<%- include ../partials/header.ejs %>
+<div class="logged-layout">
+<%- include ../partials/main_nav.ejs %>
+
+<%- include ./sidenav-partial.ejs %>
+
+<main class="grid-main">
+
+    <div class="container">
+        <form method="post">
+            <input name="essayId" value="<%= essay._id %>" hidden>
+            <img src="<%= prompt.presigned %>" class="image-max-height"><br>
+            <label for="prompt">Prompt:</label><br>
+            <textarea id="prompt" name="prompt" rows="5" disabled><%= prompt.promptMessage %></textarea><br>
+            <label for="prompt">Essay:</label><br>
+            <textarea id="prompt" name="prompt" rows="5" disabled><%= essay.essayBody %></textarea>
+            <h4>Feedback:</h4>
+            <label for="startingIELTSLevel"> BandScore: </label>
+            <select class="form-select" name="bandScore">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option selected value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+            </select>
+            <textarea name="feedback" rows="5"></textarea><br>
+            <input type="submit" class="btn btn-primary" value="Submit">
+        </form>
+    </div>
+
+</main>
+
+<%- include ../partials/bottom_nav.ejs %>
+</div>
+<%- include ../partials/footer.ejs %>

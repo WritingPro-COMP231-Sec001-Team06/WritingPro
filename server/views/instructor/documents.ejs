@@ -1,0 +1,49 @@
+<%- include ../partials/header.ejs %>
+<div class="layout">
+<%- include ../partials/main_nav.ejs %>
+
+<main class="grid-main">
+    <div class="container d-flex flex-column justify-content-center align-items-center">
+        <% if(metadatas.length < 3) { %>
+            <a href="/instructor/documents/upload" class="btn btn-primary">Upload File</a>
+            <br>
+        <% } else if(metadatas.length >= 3) { %>
+            <a href="#" class="btn btn-primary" disabled>Upload File</a>
+            <br>
+            <p class="text-danger m-auto">Note: Only 3 files are allowed. Please delete the rejected file(s) to upload anew.</p>
+        <% } %>
+        <% for(let i = 0; i < metadatas.length; i++) { %>
+            <div class="prompt-card">
+            <div class="row">
+                <div class="col-10 vertical-line">
+                    <p class="m-0"><span class="fw-sb">Title:</span> <em><%= metadatas[i].title %></em></p>
+                    <p class="m-0"><span class="fw-sb">Description:</span> <em><%= metadatas[i].description %></em></p>
+                    <p class="m-0"><span class="fw-sb">Upload Date:</span> <em><%= metadatas[i].dateUploaded %></em></p>
+                    <% if(metadatas[i].status === "pending") { %>
+                        <p class="m-0"><span class="fw-sb">Status:</span> <span class="pending"><%= metadatas[i].status %></span></p>
+                    <% } else if(metadatas[i].status === "approved"){ %>
+                        <p class="m-0"><span class="fw-sb">Status:</span> <span class="active"><%= metadatas[i].status %></span></p>
+                    <% } else if(metadatas[i].status === "rejected"){ %>
+                    <p class="m-0"><span class="fw-sb">Status:</span> <span class="inactive"><%= metadatas[i].status %></span></p>
+                    <% } %>
+                </div>
+                    <div class="col ms-2 d-flex flex-column justify-content-center align-items-center">
+                    <a href="/instructor/documents/view/<%= metadatas[i]._id %>" target="_blank" class="btn btn-outline-primary lh-1 w-75 my-1">View</a>
+                    <% if (metadatas[i].status === 'approved') { %>
+                        <a href="/instructor/documents/delete/<%= metadatas[i]._id %>" class="btn btn-outline-danger lh-1 w-75 my-1" hidden>Delete</a>
+                    <% }  else { %>
+                        <a href="/instructor/documents/delete/<%= metadatas[i]._id %>" class="btn btn-outline-danger lh-1 w-75 my-1">Delete</a>
+                    <% } %>
+                </div>
+            </div>
+            </div>
+            <br>
+            <% } %>
+    </div>
+  
+  
+</main>
+
+<%- include ../partials/bottom_nav.ejs %>
+</div>
+<%- include ../partials/footer.ejs %>

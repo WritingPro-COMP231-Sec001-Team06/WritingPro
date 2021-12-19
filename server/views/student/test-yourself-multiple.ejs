@@ -1,0 +1,144 @@
+<%- include ../partials/header.ejs %>
+<%- include ../partials/main_nav.ejs %>
+<ul class="nav nav-tabs mx-5 mt-5 border-bottom-0">
+    <li class="nav-item onhover" onclick="openTab(0)">
+        <a class="nav-link h-100 active" id="task1-item" >Task 1</a>
+    </li>
+    <li class="nav-item onhover"  onclick="openTab(1)">
+        <a class="nav-link h-100" id="task2-item">Task 2</a>
+    </li>
+    <li class="nav-item ms-auto border border-bottom-0 px-3 py-2">
+        <span>Timer: </span>
+        <span id="timer"></span>
+    </li>
+</ul>
+
+<form action="test-yourself-multiple/submit" method="post" class="h-100">
+    <div id="1" class="d-flex p-5 mx-5 border task-tab d-block">
+        <div class="w-25">
+            <p class="fs-5">Prompt1:</p>
+        <input type="hidden" name="prompt1Id" value="<%= prompt1Id %>">
+            <p class="my-4">
+                <%= body1 %>
+            </p>
+            <img src="<%= image %>" alt=""
+                width="100%">
+        </div>
+        <div class="flex-grow-1 ms-5">
+            <div class="d-flex">
+
+                <div class="border px-3 py-2 mb-2 text-center ms-auto">
+                    <span class="d-block">Word Count</span>
+                    <span id="word-counter1">0</span>
+                </div>
+            </div>
+            <div class="mb-3">
+                <textarea name="task1Writing" class="form-control w-100" id="task1-writing" rows="15"
+                    oninput="countWord()"></textarea>
+            </div>
+
+            <input type="hidden" name="wordCount1" id="word-count-input1">
+            <input type="hidden" name="type" value="<%= type %>">
+            <button type="submit" class="btn btn-primary d-block ms-auto">Submit</button>
+        </div>
+    </div>
+
+    <div id="2" class="d-flex p-5 mx-5 border task-tab d-none">
+        <div class="w-25">
+            <p class="fs-5">Prompt2:</p>
+        <input type="hidden" name="prompt2Id" value="<%= prompt2Id %>">
+            <p class="my-4">
+                <%= body2 %>
+            </p>
+        </div>
+        <div class="flex-grow-1 ms-5">
+            <div class="d-flex">
+
+                <div class="border px-3 py-2 mb-2 text-center ms-auto">
+                    <span class="d-block">Word Count</span>
+                    <span id="word-counter2">0</span>
+                </div>
+            </div>
+            <div class="mb-3">
+                <textarea class="form-control w-100" id="task2-writing" name="task2Writing" rows="15"
+                    oninput="countWord()"></textarea>
+            </div>
+
+            <input type="hidden" name="wordCount2" id="word-count-input2">
+            <button type="submit" class="btn btn-primary d-block ms-auto">Submit</button>
+        </div>
+    </div>
+</form>
+
+
+<script>
+    let timer = document.getElementById('timer');
+    let deadline = new Date();
+    deadline.setMinutes(deadline.getMinutes() + <%= time %>);
+
+    // Set the date we're counting down to
+    var countDownDate = new Date().getTime();
+
+    // Update the count down every 1 second
+    var x = setInterval(function () {
+        // Get today's date and time
+        let now = new Date().getTime();
+
+        // Find the distance between now and the count down date
+        let elipse = deadline - now;
+
+        // Time calculations for hours, minutes and seconds
+        let hours = Math.floor((elipse % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        let minutes = Math.floor((elipse % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((elipse % (1000 * 60)) / 1000);
+
+        timer.innerText =
+            `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+    }, 1000)
+
+    function countWord() {
+        let writing1 = document.getElementById('task1-writing').value;
+        let wordCounter1 = document.getElementById('word-counter1');
+        let wordCounterInput1 = document.getElementById('word-count-input1');
+        let wordCountValue1 = writing1.length && writing1.split(/\s+\b/).length || 0;
+        wordCounterInput1.value = wordCountValue1;
+        wordCounter1.innerText = wordCountValue1;
+        console.log("value: ", wordCountValue1);
+
+        let writing2 = document.getElementById('task2-writing').value;
+        let wordCounter2 = document.getElementById('word-counter2');
+        let wordCounterInput2 = document.getElementById('word-count-input2');
+        let wordCountValue2 = writing2.length && writing2.split(/\s+\b/).length || 0;
+        wordCounterInput2.value = wordCountValue2;
+        wordCounter2.innerText = wordCountValue2;
+    }
+
+
+    function openTab(tab) {
+        var x = document.getElementsByClassName("task-tab");
+        let task1 = document.getElementById('task1-item');
+        let task2 = document.getElementById('task2-item');
+        if (tab == 0) {
+            if(!task1.classList.contains('active')){
+                task1.classList.add('active');
+            }
+            task2.classList.remove('active');
+            x[0].classList.add('d-block');
+            x[0].classList.remove('d-none');
+            x[1].classList.add('d-none');
+            x[1].classList.remove('d-block');
+        } else {
+            if(!task2.classList.contains('active')){
+                task2.classList.add('active');
+            }
+            task1.classList.remove('active');
+            x[0].classList.remove('d-block');
+            x[0].classList.add('d-none');
+            x[1].classList.remove('d-none');
+            x[1].classList.add('d-block');
+            
+        }
+    }
+</script>
+
+<%- include ../partials/footer.ejs %>

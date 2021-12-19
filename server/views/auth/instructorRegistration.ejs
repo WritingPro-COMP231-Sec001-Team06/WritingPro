@@ -1,0 +1,104 @@
+<%- include ../partials/header.ejs %>
+<div class="layout">
+<%- include ../partials/main_nav.ejs %>
+
+    <div class="grid-main">
+        <main class="d-block container">
+
+            <!-- Message Area -->
+
+            <% if(messages.length > 0) { %>
+
+            <div class = "alert alert-danger">
+                <%= messages %>
+            </div>
+
+            <% } %>
+
+            <!-- Main Content -->
+            <div class="row justify-content-md-center">
+                <div class="col-8">
+                <h4 class="display-2 text-center">Instructor Registration</h4>
+                <hr class="my-4">
+                </div>
+                </div>
+
+            <div class="container">
+            <div class="row">
+            <div class="offset-md-4 col-md-4">
+        
+
+            <form method="POST" autocomplete="off">
+
+                <fieldset class="form-group">
+                <label for="username"> Email: </label>
+                <input type="email" class="form-control" 
+                 id="username" name="username" 
+                 placeholder="Enter the email." required autofocus>
+                </fieldset>
+
+                <fieldset class="form-group">
+                <label for="password"> Password: </label>
+                <input type="password" class="form-control" 
+                id="password" name="password" 
+                placeholder="Enter password." required>
+                </fieldset>
+
+                <fieldset class="form-group">
+                <label for="firstName"> First Name: </label>
+                <input type="text" class="form-control" 
+                id="firstName" name="firstName" 
+                placeholder="Enter Your First Name." required>
+                </fieldset>
+
+                <fieldset class="form-group">
+                <label for="lastName"> Last Name: </label>
+                <input type="text" class="form-control" 
+                id="lastName" name="lastName" 
+                placeholder="Enter Your Last Name." required>
+                </fieldset>
+
+                <fieldset class="form-group">
+                <label for="address"> Address: </label>
+                <input type="text" class="form-control" 
+                id="address" name="address" 
+                placeholder="Enter Your Address." required>
+                </fieldset>
+
+                <fieldset class="form-group">
+                <label for="city"> City: </label>
+                <input type="text" class="form-control" 
+                id="city" name="city" 
+                placeholder="Enter Your City." required>
+                </fieldset>
+
+                <fieldset class="form-group">
+                <label for="country"> Country: </label>
+                <input type="text" class="form-control" 
+                id="country" name="country" 
+                placeholder="Enter Your Country." required>
+                </fieldset>
+
+                <br>
+                <fieldset class="form-group text-right">
+                <input type="submit" class="btn btn-success" value="Register">
+                <a href="/" class="btn btn-warning">Cancel</a>
+                <a href="/register" class="m-2">Student Registration</a>
+                </fieldset>      
+
+            </form>
+
+            </div>
+            </div>
+            </div>
+
+        </main>
+    </div>
+
+
+
+
+
+<%- include ../partials/bottom_nav.ejs %>
+</div>
+<%- include ../partials/footer.ejs %>

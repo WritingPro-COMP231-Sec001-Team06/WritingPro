@@ -1,0 +1,132 @@
+.layout{
+    display: grid;
+    grid-template-areas: 
+    "header header"
+    "content content"
+    "footer footer";
+    grid-template-columns: 4fr 16fr;
+    grid-template-rows: 5fr 90fr 3fr;
+    gap: 5px;
+    height: 100vh;
+    padding: 5px 5px 0 5px;
+}
+
+.logged-layout{
+    display: grid;
+    grid-template-areas: 
+    "header header"
+    "sidenav content"
+    "footer footer";
+    grid-template-columns: 4fr 16fr;
+    grid-template-rows: 5fr 90fr 3fr;
+    height: 100vh;
+    padding: 5px 5px 0 5px;
+}
+
+.pdfview-layout{
+    display: grid;
+    grid-template-areas: 
+    "header"
+    "content";
+    grid-template-rows: 10fr 90fr;
+    height: 100vh;
+    padding: 5px 5px 0 5px;
+}
+
+.grid-header{
+    grid-area: header;
+}
+
+.grid-nav{
+    grid-area: sidenav;
+}
+
+.grid-main{
+    grid-area: content;
+    margin: 0px;
+}
+
+.grid-footer{
+    grid-area: footer;
+}
+
+.img-preview{
+    width: 70%;
+}
+
+textarea{
+    width: 70%;
+    white-space: pre-wrap;
+}
+
+.scrollable-vertical{
+    overflow-y: scroll;
+}
+.position-sticky{
+    width: 100%;
+    padding-bottom: 5px;
+    padding-left: 20px;
+    margin-bottom: 20px;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0px;
+    z-index: 100000;
+    background-color: #f8f9fa;
+}
+.height-100{
+    margin: auto;
+    height: 100%;
+}
+.lh-1{
+    line-height: 1;
+}
+.row{
+    --bs-gutter-x: 0;
+}
+.form-select{
+    width: fit-content;
+}
+.prompt-card{
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 0.25rem;
+    width: 60%;
+    padding: 5px 10px;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.active{
+    color: green;
+    font-weight: 700;
+}
+.inactive{
+    color: rgb(168, 54, 54);
+    font-weight: 700;
+}
+.vertical-line{
+    border-right: 1px solid rgba(0,0,0,.125);
+}
+.fw-sb{
+    font-weight:600;
+}
+.pdf-preview{
+    width: 100%;
+    height: 30vh;
+    background-color: darkgray;
+}
+.pending{
+    color: rgb(184, 181, 49);
+    font-weight: 700;
+}
+.fill-content{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+.onhover:hover{
+    cursor: pointer;
+}
+
+.image-max-height{
+    max-height: 600px;
+}

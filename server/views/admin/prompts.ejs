@@ -1,0 +1,82 @@
+<%- include ../partials/header.ejs %>
+<div class="logged-layout">
+<%- include ../partials/main_nav.ejs %>
+
+<%- include ./sidenav_partial.ejs %>
+
+<main class="grid-main scrollable-vertical">
+<div class="position-sticky">
+  <div class="row">
+    <div class="col-4">
+      <div class="d-flex align-items-center">
+      <h5 class="my-auto">Create: </h5>
+      <a class="btn btn-outline-primary lh-1 mx-1" href="/admin/prompts/create/1a">Academic Task 1</a><hr>
+      <a class="btn btn-outline-primary lh-1 mx-1" href="/admin/prompts/create/1g">Genereal Task 1</a><hr>
+      <a class="btn btn-outline-primary lh-1 mx-1" href="/admin/prompts/create/2t">Task 2</a><hr>
+      </div>
+    </div>
+    <div class="col">
+      <form method="POST">
+        <div class="d-flex align-items-center">
+          <h5 class="my-auto">Filter: </h5>
+          <select class="form-select lh-1 mx-1"  name="filterStatus" aria-label="Filter Status">
+            <option value="<%= filterStatus.value %>" hidden><%= filterStatus.display %></option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+            <option value="none">None</option>
+          </select>
+          <select class="form-select lh-1 mx-1" name="filterTask" aria-label="Filter Task">
+            <option value="<%= filterTask.value %>" hidden><%= filterTask.display %></option>
+            <option value="task1">Task 1</option>
+            <option value="task2">Task 2</option>
+            <option value="none">None</option>
+          </select>
+          <select class="form-select lh-1 mx-1" name="filterType" aria-label="Filter Type">
+            <option value="<%= filterType.value %>" hidden><%= filterType.display %></option>
+            <option value="academic">Academic</option>
+            <option value="general">General</option>
+            <option value="none">None</option>
+          </select>
+          <button type="submit" class="btn btn-outline-info lh-1 mx-1">Filter</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<% for(let i = 0; i < prompts.length; i++) { %>
+<div class="prompt-card">
+  <div class="row">
+    <div class="col-10 vertical-line">
+      <p class="m-0"><span class="fw-sb">Exam Type:</span> <em><%= prompts[i].examType %></em></p>
+      <% if(prompts[i].isTask1 && prompts[i].isAcademic) {%>
+        <p class="m-0"><span class="fw-sb">Image Description:</span> <em><%= prompts[i].imageDescription %></em></p>
+      <% } %>
+      <p class="m-0"><span class="fw-sb">Task:</span> <em><%= prompts[i].task %></em></p>
+      <p class="m-0"><span class="fw-sb">Prompt:</span> <em><%= prompts[i].promptMessage %></em></p>
+      <p class="m-0"><span class="fw-sb">Date Created:</span> <em><%= prompts[i].dateCreated %></em></p>
+      <% if(prompts[i].isActive) { %>
+        <p class="m-0"><span class="fw-sb">Status:</span> <span class="active"><%= prompts[i].status %></span></p>
+      <% } else { %>
+        <p class="m-0"><span class="fw-sb">Status:</span> <span class="inactive"><%= prompts[i].status %></span></p>
+      <% } %>
+    </div>
+    <div class="col ms-2 d-flex flex-column justify-content-center align-items-center">
+      <% if(prompts[i].isTask1 && prompts[i].isAcademic) { %>
+      <a href="/admin/prompts/view/<%= prompts[i].id %>" class="btn btn-outline-primary lh-1 w-75 my-1">View</a>
+      <% } %>
+      <a href="/admin/prompts/edit/<%= prompts[i].id %>" class="btn btn-outline-warning lh-1 w-75 my-1">Edit</a>
+      <% if(prompts[i].isActive) { %>
+        <a href="/admin/prompts/changestatus/<%= prompts[i].id %>=<%= prompts[i].isActive %>" class="btn btn-outline-danger lh-1 w-75 my-1">Deactivate</a>
+      <% } else { %>
+       <a href="/admin/prompts/changestatus/<%= prompts[i].id %>=<%= prompts[i].isActive %>" class="btn btn-outline-success lh-1 w-75 my-1">Activate</a>
+       <% } %>
+    </div>
+  </div>
+</div>
+<br>
+<% } %>
+</main>
+
+<%- include ../partials/bottom_nav.ejs %>
+</div>
+<%- include ../partials/footer.ejs %>

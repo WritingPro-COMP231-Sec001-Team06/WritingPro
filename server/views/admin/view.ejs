@@ -1,0 +1,31 @@
+<%- include ../partials/header.ejs %>
+<div class="logged-layout">
+<%- include ../partials/main_nav.ejs %>
+<%- include ./sidenav_partial.ejs %>
+
+<main class="grid-main">
+  <h4><%= title %></h4>
+  <div class ="container">
+    <% if(prompt.isTask1 && prompt.isAcademic) { %>
+      <div class="form-group">
+        <br>
+        <img class="img-preview d-block align-items-center" src="<%= prompt.imageUrl %>"/>
+      </div>
+      <br>
+      <fieldset class="form-group">
+        <label for="imageDescription"> Image Description </label><br>
+        <input class=" img-preview" type="text" class="form-control" name="imageDescription" value="<%= prompt.imageDescription %>" >
+      </fieldset>
+      <br>
+      <% } %>
+      <div class="form-group">
+        <label for="prompt">Prompt:</label><br>
+        <textarea id="prompt" name="prompt" rows="10" disabled><%= prompt.promptMessage %></textarea>
+      </div>
+      <br>
+  </div>
+</main>
+
+<%- include ../partials/bottom_nav.ejs %>
+</div>
+<%- include ../partials/footer.ejs %>

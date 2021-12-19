@@ -1,0 +1,146 @@
+<%- include ../partials/header.ejs %>
+<div class="">
+<%- include ../partials/main_nav.ejs %>
+
+    <div class="grid-main">
+        <main class="d-block container">
+
+            <!-- Message Area -->
+
+            <% if(messages.length > 0) { %>
+
+            <div class = "alert alert-danger">
+                <%= messages %>
+            </div>
+
+            <% } %>
+
+            <!-- Main Content -->
+            <div class="row justify-content-md-center">
+                <div class="col-8">
+                <h2 class="display-2 text-center">Please Register</h2>
+                <hr class="my-4">
+                </div>
+                </div>
+
+            <div class="container">
+            <div class="row">
+            <div class="offset-md-4 col-md-4">
+        
+
+            <form method="POST" autocomplete="off">
+
+                <fieldset class="form-group">
+                <label for="username"> Email: </label>
+                <input type="email" class="form-control" 
+                 id="username" name="username" 
+                 placeholder="Enter the email." required autofocus>
+                </fieldset>
+
+                <fieldset class="form-group">
+                <label for="password"> Password: </label>
+                <input type="password" class="form-control" 
+                id="password" name="password" 
+                placeholder="Enter password." required>
+                </fieldset>
+
+                <fieldset class="form-group">
+                <label for="firstName"> First Name: </label>
+                <input type="text" class="form-control" 
+                id="firstName" name="firstName" 
+                placeholder="Enter Your First Name." required>
+                </fieldset>
+
+                <fieldset class="form-group">
+                <label for="lastName"> Last Name: </label>
+                <input type="text" class="form-control" 
+                id="lastName" name="lastName" 
+                placeholder="Enter Your Last Name." required>
+                </fieldset>
+
+                <fieldset class="form-group">
+                <label for="address"> Address: </label>
+                <input type="text" class="form-control" 
+                id="address" name="address" 
+                placeholder="Enter Your Address." required>
+                </fieldset>
+
+                <fieldset class="form-group">
+                <label for="city"> City: </label>
+                <input type="text" class="form-control" 
+                id="city" name="city" 
+                placeholder="Enter Your City." required>
+                </fieldset>
+
+                <fieldset class="form-group">
+                <label for="country"> Country: </label>
+                <input type="text" class="form-control" 
+                id="country" name="country" 
+                placeholder="Enter Your Country." required>
+                </fieldset>
+
+                <fieldset class="form-group">
+                <label for="firstLanguage"> First Language: </label>
+                <input type="text" class="form-control" 
+                id="firstLanguage" name="firstLanguage" 
+                placeholder="Enter Your First Language." required>
+                </fieldset>
+
+                <fieldset class="form-group">
+                <label for="startingIELTSLevel"> Starting IELTS Level: </label>
+                <select class="form-select" id="startingIELTSLevel" name="startingIELTSLevel">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option selected value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                </select>
+                </fieldset>
+
+                <fieldset class="form-group">
+                    <label for="targetScore"> Target Score: </label>
+                    <select class="form-select" id="targetScore" name="targetScore">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option selected value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                    </select>
+                    </fieldset>
+
+                <fieldset class="form-group">
+                <label for="targetTestCountry"> Target Test Country: </label>
+                <input type="text" class="form-control" 
+                id="targetTestCountry" name="targetTestCountry" 
+                placeholder="Enter Your Target Test Country." required>
+                </fieldset>
+                <br>
+                <fieldset class="form-group text-right">
+                <input type="submit" class="btn btn-success" value="Register">
+                <a href="/" class="btn btn-warning">Cancel</a>
+                <a class="m-2" href="/register/instructor">or Become an Instructor</a>
+                </fieldset>      
+
+            </form>
+
+            </div>
+            </div>
+            </div>
+        </main>
+    </div>
+
+
+
+
+
+<%- include ../partials/bottom_nav.ejs %>
+</div>
+<%- include ../partials/footer.ejs %>

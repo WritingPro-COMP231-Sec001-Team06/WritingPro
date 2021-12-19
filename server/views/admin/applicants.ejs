@@ -1,0 +1,57 @@
+<%- include ../partials/header.ejs %>
+<div class="logged-layout">
+<%- include ../partials/main_nav.ejs %>
+
+<%- include ./sidenav_partial.ejs %>
+
+<main class="grid-main">
+    <div class="position-sticky">
+        <div class="row">
+          <div class="col">
+            <form method="POST">
+              <div class="d-flex align-items-center">
+                <h5 class="my-auto">Filter: </h5>
+                <select class="form-select lh-1 mx-1"  name="filterApplicants" aria-label="Filter Applicants">
+                  <!--<option value="<%# filterStatus.value %>" hidden><%# filterStatus.display %></option>-->
+                  <option hidden value="<%= filter %>">
+                      <% if(filter === "pending") { %>
+                          Pending
+                      <% } else if(filter === "approved") { %>
+                          Approved
+                      <% } else  {%> 
+                          All
+                      <% }%>       
+                  </option>
+                  <option value="approved">Approved</option>
+                  <option value="pending">Pending</option>
+                  <option value="all">All</option>
+                </select>
+                <button type="submit" class="btn btn-outline-info lh-1 mx-1">Filter</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <% visitors.forEach(visitor => { %>
+            <div class="prompt-card">
+                <div class="row">
+                    <div class="col-10 vertical-line">
+                        <p class="m-0"><span class="fw-sb">Name:</span> <em><%= visitor.fullName %></em></p>
+                        <p class="m-0"><span class="fw-sb">Register Date:</span> <em><%= visitor.signUpDate %></em></p>
+                        <% if(visitor.isApproved) { %>
+                          <p class="m-0"><span class="fw-sb">Approved:</span> <span class="active">Yes</span></p>
+                        <% } else { %>
+                            <p class="m-0"><span class="fw-sb">Approved:</span> <span class="inactive">No</span></p>
+                        <% } %>
+                    </div>
+                    <div class="col ms-2 d-flex flex-column justify-content-center align-items-center">
+                      <a href="/admin/applicants/documents/<%= visitor.id %>" class="btn btn-primary lh-1 w-75 my-1">View Files</a>
+                    </div>
+                </div>
+            </div>
+    <% }) %>
+</main>
+
+<%- include ../partials/bottom_nav.ejs %>
+</div>
+<%- include ../partials/footer.ejs %>

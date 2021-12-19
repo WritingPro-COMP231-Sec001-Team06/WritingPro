@@ -1,0 +1,42 @@
+<nav class="grid-nav">
+    <div class="h-100 w-100 p-3 bg-light">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+      <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+      <span class="fs-4">Instructor Dashboard</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+      <% if(title === "Home") { %>
+        <li class="nav-item">
+          <a href="/instructor" class="nav-link link-dark active" aria-current="page">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+            Home
+          </a>
+        </li>
+      <% } else {%>
+        <li class="nav-item">
+          <a href="/instructor" class="nav-link link-dark" aria-current="page">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+            Home
+          </a>
+        </li>
+      <% } %>
+      <% if(title === "Essays") { %>
+        <li class="nav-item">
+          <a href="/instructor/essay" class="nav-link link-dark active" aria-current="page">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+            Essays
+          </a>
+        </li>
+      <% } else {%>
+        <li class="nav-item">
+          <a href="/instructor/essay" class="nav-link link-dark " aria-current="page">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+            Essays
+          </a>
+        </li>
+      <% } %>
+    </ul>
+    <hr>
+  </div>
+</nav>

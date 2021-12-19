@@ -3,11 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= title %></title>
+    <title> 
+      <% if (role) { %>
+        <%= role %> -
+      <% } %>
+      <%= title %></title>
     <!--CSS Section-->
     <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/bootstrap-icons/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="/@fortawesome/fontawesome-free/css/all.min.css"/>
+    <link href="/froala-editor/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="/stylesheets/app.css"/>
   </head>
   <body>

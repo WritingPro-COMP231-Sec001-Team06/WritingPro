@@ -1,0 +1,26 @@
+<%- include ../partials/header.ejs %>
+<div class="logged-layout">
+<%- include ../partials/main_nav.ejs %>
+
+<%- include ./sidenav-partial.ejs %>
+
+<main class="grid-main">
+<% essays.forEach(essay => { %>
+    <div class="prompt-card">
+        <div class="row">
+            <div class="col-10 vertical-line">
+                <p class="m-0"><span class="fw-sb">ID:</span> <em><%= essay._id %></em></p>
+                <p class="m-0"><span class="fw-sb">Type:</span> <em><%= essay.IELTSType %></em></p>
+                <p class="m-0"><span class="fw-sb">Date Taken:</span> <em><%= essay.dateCreated %></em></p>
+                <p class="m-0"><span class="fw-sb">Task:</span> <em><%= essay.essayPart %></em></p>
+            </div>
+            <div class="col ms-2 d-flex flex-column justify-content-center align-items-center">
+              <a href="/instructor/essay/grade/<%= essay.id %>" class="btn btn-primary lh-1 w-75 my-1">Feedback</a>
+            </div>
+        </div>
+    </div>
+<% }) %>
+</main>
+<%- include ../partials/bottom_nav.ejs %>
+</div>
+<%- include ../partials/footer.ejs %>
